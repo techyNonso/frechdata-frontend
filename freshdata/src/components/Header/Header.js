@@ -1,12 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import Nav from "../Nav/Nav";
+import Hero from "../Hero/Hero";
+
 function Header() {
   return (
     <div>
-      <div className="flex justify-center gap-4">
-        <Link to="/">Home</Link>
-        <Link to="/creator">Creator</Link>
-        <Link to="/admin">Admin</Link>
+      <div className="h-auto px-5 md:px-16  bg-bgBlue ">
+        <Nav />
+        <Hero />
       </div>
     </div>
   );
