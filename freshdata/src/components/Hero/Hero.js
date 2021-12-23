@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import homepageHero from "../../images/homepageHero.png";
 import { useMoralis } from "react-moralis";
 
@@ -10,7 +10,10 @@ function Hero() {
     authenticate,
     isWeb3Enabled,
     enableWeb3,
+    user,
   } = useMoralis();
+
+  const [userState, setUser] = useState(isAuthenticated);
 
   //connect wallet
   const connectWallet = async () => {
@@ -25,7 +28,7 @@ function Hero() {
         "pillar",
       ],
     });
-
+    setUser(isAuthenticated);
     console.log(user);
   };
 
@@ -34,6 +37,7 @@ function Hero() {
       enableWeb3({ provider: "walletconnect" });
       console.log("web3 activated");
     }
+    setUser(isAuthenticated);
   }, [isWeb3Enabled, isAuthenticated, enableWeb3]);
   return (
     <div>
@@ -48,12 +52,14 @@ function Hero() {
               governance proposals and make your voice heard.
             </p>
 
-            <div
-              onClick={connectWallet}
-              className="bg-secondaryBtn w-fit text-white mt-6  font-medium leading-loose cursor-pointer rounded-2xl p-2 px-4 tracking-wider"
-            >
-              Connect Wallet
-            </div>
+            {!isAuthenticated && (
+              <div
+                onClick={connectWallet}
+                className="bg-secondaryBtn w-fit text-white mt-6  font-medium leading-loose cursor-pointer rounded-2xl p-2 px-4 tracking-wider"
+              >
+                Connect Wallet
+              </div>
+            )}
           </div>
         </div>
         <div className=" hidden sm:block sm:col-span-2 xl:col-span-1">

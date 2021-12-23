@@ -10,12 +10,14 @@ function Nav() {
     authenticate,
     isWeb3Enabled,
     enableWeb3,
+    user,
   } = useMoralis();
   const [menu, setMenu] = useState("hidden");
+  const [userState, setUser] = useState(isAuthenticated);
 
   //connect wallet
   const connectWallet = async () => {
-    const user = await authenticate({
+    const myuser = await authenticate({
       provider: "walletconnect",
       mobileLinks: [
         "rainbow",
@@ -26,8 +28,15 @@ function Nav() {
         "pillar",
       ],
     });
+    setUser(isAuthenticated);
+    console.log(myuser);
+  };
 
-    console.log(user);
+  //disconnect wallet
+  const disConnectWallet = () => {
+    Moralis.User.logOut().then(() => {
+      setUser(false);
+    });
   };
 
   useEffect(() => {
@@ -35,6 +44,7 @@ function Nav() {
       enableWeb3({ provider: "walletconnect" });
       console.log("web3 activated");
     }
+    setUser(isAuthenticated);
   }, [isWeb3Enabled, isAuthenticated, enableWeb3]);
   return (
     <div>
@@ -58,12 +68,22 @@ function Nav() {
           </div>
         </div>
         <div className="hidden md:flex col-span-1  justify-end">
-          <button
-            onClick={connectWallet}
-            className="bg-primaryBtn w-fit text-white  font-headFont font-medium leading-loose cursor-pointer rounded-2xl p-2 px-2 tracking-wider"
-          >
-            Connect Wallet
-          </button>
+          {!userState && (
+            <button
+              onClick={connectWallet}
+              className="bg-primaryBtn w-fit text-white  font-headFont font-medium leading-loose cursor-pointer rounded-2xl p-2 px-2 tracking-wider"
+            >
+              Connect Wallet
+            </button>
+          )}
+          {userState && (
+            <button
+              onClick={disConnectWallet}
+              className="bg-gray-400 w-fit text-gray-600  font-headFont font-medium leading-loose cursor-pointer rounded-2xl p-2 px-2 tracking-wider"
+            >
+              Disconnect Wallet
+            </button>
+          )}
         </div>
 
         <div className="flex md:hidden pt-3 justify-self-end">
@@ -108,12 +128,23 @@ function Nav() {
           <div className="w-full py-2 hover:bg-bgGray pl-2">
             <Link to="/about">About</Link>
           </div>
-          <button
-            onClick={connectWallet}
-            className="bg-primaryBtn w-full mt-2 text-white  font-headFont font-medium leading-loose cursor-pointer rounded-2xl p-2 px-2 tracking-wider"
-          >
-            Connect Wallet
-          </button>
+
+          {!userState && (
+            <button
+              onClick={connectWallet}
+              className="bg-primaryBtn w-full mt-2 text-white  font-headFont font-medium leading-loose cursor-pointer rounded-2xl p-2 px-2 tracking-wider"
+            >
+              Connect Wallet
+            </button>
+          )}
+          {userState && (
+            <button
+              onClick={disConnectWallet}
+              className="bg-gray-400 w-fit mt-2 text-white  font-headFont font-medium leading-loose cursor-pointer rounded-2xl p-2 px-2 tracking-wider"
+            >
+              Disconnect Wallet
+            </button>
+          )}
         </div>
       </div>
     </div>
