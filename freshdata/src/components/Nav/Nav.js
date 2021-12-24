@@ -1,51 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useMoralis } from "react-moralis";
+import { useAuthUpdate, useAuth } from "../../contexts/AuthProvider";
 
 function Nav() {
-  const {
-    logout,
-    isAuthenticated,
-    Moralis,
-    authenticate,
-    isWeb3Enabled,
-    enableWeb3,
-    user,
-  } = useMoralis();
+  //get update contexts
+  const [connectWallet, disConnectWallet] = useAuthUpdate();
+
+  //get auth context
+  const AuthState = useAuth();
+  const { isAuthenticated, isWeb3Enabled, enableWeb3, user } = useMoralis();
   const [menu, setMenu] = useState("hidden");
-  const [userState, setUser] = useState(isAuthenticated);
 
-  //connect wallet
-  const connectWallet = async () => {
-    const myuser = await authenticate({
-      provider: "walletconnect",
-      mobileLinks: [
-        "rainbow",
-        "metamask",
-        "argent",
-        "trust",
-        "imtoken",
-        "pillar",
-      ],
-    });
-    setUser(isAuthenticated);
-    console.log(myuser);
-  };
-
-  //disconnect wallet
-  const disConnectWallet = () => {
-    Moralis.User.logOut().then(() => {
-      setUser(false);
-    });
-  };
+  console.log(AuthState, user, isAuthenticated);
 
   useEffect(() => {
     if (!isWeb3Enabled && isAuthenticated) {
       enableWeb3({ provider: "walletconnect" });
-      console.log("web3 activated");
+      //console.log("web3 activated");
     }
-    setUser(isAuthenticated);
-  }, [isWeb3Enabled, isAuthenticated, enableWeb3]);
+  }, [isWeb3Enabled, isAuthenticated, enableWeb3, AuthState]);
   return (
     <div>
       <div className="grid grid-cols-4 pt-10 relative">
@@ -58,7 +32,7 @@ function Nav() {
             <Link to="/creator">creator</Link>
           </div>
           <div className="hover:border-b-2 border-primaryBtn pb-1  cursor-pointer">
-            <Link to="/admin">Holder</Link>
+            <Link to="/holder">Holder</Link>
           </div>
           <div className="hover:border-b-2 border-primaryBtn pb-1  cursor-pointer">
             <Link to="/admin">Learn</Link>
@@ -68,7 +42,7 @@ function Nav() {
           </div>
         </div>
         <div className="hidden md:flex col-span-1  justify-end">
-          {!userState && (
+          {!AuthState && (
             <button
               onClick={connectWallet}
               className="bg-primaryBtn w-fit text-white  font-headFont font-medium leading-loose cursor-pointer rounded-2xl p-2 px-2 tracking-wider"
@@ -76,7 +50,7 @@ function Nav() {
               Connect Wallet
             </button>
           )}
-          {userState && (
+          {AuthState && (
             <button
               onClick={disConnectWallet}
               className="bg-gray-400 w-fit text-gray-600  font-headFont font-medium leading-loose cursor-pointer rounded-2xl p-2 px-2 tracking-wider"
@@ -129,7 +103,7 @@ function Nav() {
             <Link to="/about">About</Link>
           </div>
 
-          {!userState && (
+          {!AuthState && (
             <button
               onClick={connectWallet}
               className="bg-primaryBtn w-full mt-2 text-white  font-headFont font-medium leading-loose cursor-pointer rounded-2xl p-2 px-2 tracking-wider"
@@ -137,7 +111,7 @@ function Nav() {
               Connect Wallet
             </button>
           )}
-          {userState && (
+          {AuthState && (
             <button
               onClick={disConnectWallet}
               className="bg-gray-400 w-fit mt-2 text-white  font-headFont font-medium leading-loose cursor-pointer rounded-2xl p-2 px-2 tracking-wider"

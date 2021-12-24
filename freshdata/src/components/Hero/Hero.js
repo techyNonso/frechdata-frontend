@@ -1,44 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import homepageHero from "../../images/homepageHero.png";
 import { useMoralis } from "react-moralis";
+import { useAuthUpdate, useAuth } from "../../contexts/AuthProvider";
 
 function Hero() {
-  const {
-    logout,
-    isAuthenticated,
-    Moralis,
-    authenticate,
-    isWeb3Enabled,
-    enableWeb3,
-    user,
-  } = useMoralis();
-
-  const [userState, setUser] = useState(isAuthenticated);
-
-  //connect wallet
-  const connectWallet = async () => {
-    const user = await authenticate({
-      provider: "walletconnect",
-      mobileLinks: [
-        "rainbow",
-        "metamask",
-        "argent",
-        "trust",
-        "imtoken",
-        "pillar",
-      ],
-    });
-    setUser(isAuthenticated);
-    console.log(user);
-  };
+  //get update contexts
+  const [connectWallet] = useAuthUpdate();
+  //get auth context
+  const AuthState = useAuth();
+  const { isAuthenticated, isWeb3Enabled, enableWeb3 } = useMoralis();
 
   useEffect(() => {
     if (!isWeb3Enabled && isAuthenticated) {
       enableWeb3({ provider: "walletconnect" });
-      console.log("web3 activated");
+      // console.log("web3 activated");
     }
-    setUser(isAuthenticated);
-  }, [isWeb3Enabled, isAuthenticated, enableWeb3]);
+  }, [isWeb3Enabled, isAuthenticated, enableWeb3, AuthState]);
   return (
     <div>
       <div className="grid grid-cols-4 mt-14 pb-10">
@@ -52,7 +29,7 @@ function Hero() {
               governance proposals and make your voice heard.
             </p>
 
-            {!isAuthenticated && (
+            {!AuthState && (
               <div
                 onClick={connectWallet}
                 className="bg-secondaryBtn w-fit text-white mt-6  font-medium leading-loose cursor-pointer rounded-2xl p-2 px-4 tracking-wider"
