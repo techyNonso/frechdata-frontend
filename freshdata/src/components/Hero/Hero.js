@@ -18,7 +18,7 @@ function Hero() {
   }, [isWeb3Enabled, isAuthenticated, enableWeb3, AuthState]);
   return (
     <div>
-      <div className="grid grid-cols-4 mt-14 pb-10">
+      <div className="grid grid-cols-4 pt-14 pb-10 h-auto px-5 md:px-16  bg-bgBlue ">
         <div className=" col-span-4 sm:col-span-2 xl:col-span-3">
           <div>
             <h2 className=" font-bold  text-3xl sm:text-4xl lg:text-6xl pb-4 xl:leading-normal">

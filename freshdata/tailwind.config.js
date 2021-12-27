@@ -6,7 +6,7 @@ module.exports = {
         bgBlue: "#D1E5F8",
         bgGray: "#F1F7FD",
         primaryBtn: "#2C6CF4",
-        secondaryBtn: "#F6CE5F",
+        secondaryBtn: "#2E0669",
       },
       fontFamily: {
         headFont: ["Montserrat"],

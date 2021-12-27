@@ -4,6 +4,7 @@ import CoinHolder from "./pages/CoinHolder";
 import CoinCreator from "./pages/CoinCreator";
 import Home from "./pages/Home";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Proposals from "./pages/Proposals";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/admin" exact element={<Admin />} />
           <Route path="/holder" exact element={<CoinHolder />} />
           <Route path="/creator" exact element={<CoinCreator />} />
+          <Route path="/propsals" exact element={<Proposals />} />
         </Routes>
       </div>
     </Router>

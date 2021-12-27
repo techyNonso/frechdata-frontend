@@ -7,7 +7,6 @@ function Header() {
     <div>
       <div className="h-auto px-5 md:px-16  bg-bgBlue ">
         <Nav />
-        <Hero />
       </div>
     </div>
   );
