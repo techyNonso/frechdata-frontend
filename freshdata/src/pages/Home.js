@@ -9,7 +9,7 @@ function Home() {
   return (
     <div className="font-headFont ">
       <AuthProvider>
-        <Header />
+        <Header bg={"bg-bgBlue"} />
         <Hero />
         <SecondFrame />
         <HomeBase />

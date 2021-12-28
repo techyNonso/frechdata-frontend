@@ -9,7 +9,7 @@ function CoinHolder() {
   return (
     <div className="font-headFont ">
       <AuthProvider>
-        <Header />
+        <Header bg={"bg-bgBlue"} />
         <CoinHero />
         <CoinHolderSecond />
       </AuthProvider>

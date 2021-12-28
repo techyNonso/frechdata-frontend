@@ -11,7 +11,7 @@ function CoinHolderSecond() {
           </h3>
           <div className="col-span-3 sm:col-span-2 mb-6  ">
             <form>
-              <div className="relative text-gray-600 text-right  focus-within:text-gray-400">
+              <div className="relative text-gray-400 text-right  ">
                 <span className="absolute y-0 l-0 ">
                   <button
                     type="submit"
@@ -35,7 +35,7 @@ function CoinHolderSecond() {
                 <input
                   type="text"
                   name="q"
-                  className="py-2 text-sm text-gray rounded-full w-full max-w-md pl-10 focus:outline-none shadow cursor-pointer "
+                  className="py-2 text-sm text-gray-500 rounded-full w-full max-w-md pl-10 focus:outline-none shadow-md cursor-pointer "
                   placeholder="Search..."
                   autoComplete="off"
                 />
