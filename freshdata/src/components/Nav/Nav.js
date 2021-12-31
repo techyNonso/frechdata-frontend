@@ -12,7 +12,7 @@ function Nav() {
   const { isAuthenticated, isWeb3Enabled, enableWeb3, user } = useMoralis();
   const [menu, setMenu] = useState("hidden");
 
-  console.log(AuthState, user, isAuthenticated);
+  //console.log(AuthState, user, isAuthenticated);
 
   useEffect(() => {
     if (!isWeb3Enabled && isAuthenticated) {
@@ -87,21 +87,21 @@ function Nav() {
         <div
           className={` ${menu} absolute  top-24 px-2 py-4 right-0 h-auto bg-white text-[15px] font-normal shadow rounded-md w-[200px]`}
         >
-          <div className="w-full py-2 hover:bg-bgGray pl-2">
-            <Link to="/">Home</Link>
-          </div>
-          <div className="w-full py-2 hover:bg-bgGray pl-2">
-            <Link to="/creator">Creator</Link>
-          </div>
-          <div className="w-full py-2 hover:bg-bgGray pl-2">
-            <Link to="/holder">Holder</Link>
-          </div>
-          <div className="w-full py-2 hover:bg-bgGray pl-2">
-            <Link to="/learn">Learn</Link>
-          </div>
-          <div className="w-full py-2 hover:bg-bgGray pl-2">
-            <Link to="/about">About</Link>
-          </div>
+          <Link to="/">
+            <div className="w-full py-2 hover:bg-bgGray pl-2">Home</div>
+          </Link>
+          <Link to="/creator">
+            <div className="w-full py-2 hover:bg-bgGray pl-2">Creator</div>
+          </Link>
+          <Link to="/holder">
+            <div className="w-full py-2 hover:bg-bgGray pl-2">Holder</div>
+          </Link>
+          <Link to="/learn">
+            <div className="w-full py-2 hover:bg-bgGray pl-2">Learn</div>
+          </Link>
+          <Link to="/about">
+            <div className="w-full py-2 hover:bg-bgGray pl-2">About</div>
+          </Link>
 
           {!AuthState && (
             <button

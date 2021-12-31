@@ -4,7 +4,9 @@ import CoinCard from "../Card/CoinCard";
 function ProposalList() {
   return (
     <div>
-      <CoinCard />
+      <CoinCard status={0} />
+      <CoinCard status={1} />
+      <CoinCard status={2} />
     </div>
   );
 }

@@ -1,7 +1,12 @@
 import React from "react";
 import coin from "../../images/coin.png";
+import { useMoralis } from "react-moralis";
+import { useAuthUpdate, useAuth } from "../../contexts/AuthProvider";
 
 function HolderHero() {
+  //get auth context
+  const AuthState = useAuth();
+
   return (
     <div>
       <div className="pt-6 bg-bgGray h-auto px-5 md:px-16 pb-10 ">
@@ -64,12 +69,21 @@ function HolderHero() {
             Lorem Coin
           </h2>
           <div className="flex w-fit m-auto sm:ml-0 sm:mt-0">
-            <button className="w-fit h-fit rounded-full px-4 py-2 ml-3 cursor-pointer mt-3 bg-gray-400 hover:bg-gray-500 text-white font-medium">
-              create proposal
-            </button>
-            <button className="w-fit h-fit rounded-md px-4 py-2 ml-3 cursor-pointer mt-3 bg-secondaryBtn text-white font-medium">
-              Join
-            </button>
+            {AuthState && (
+              <button className="w-fit h-fit rounded-full px-4 py-2 ml-3 cursor-pointer mt-3 bg-secondaryBtn text-white font-medium">
+                create proposal
+              </button>
+            )}
+            {!AuthState && (
+              <button className="w-fit h-fit rounded-full px-4 py-2 ml-3 cursor-pointer mt-3 bg-gray-400 hover:bg-gray-500 text-white font-medium">
+                create proposal
+              </button>
+            )}
+            {!AuthState && (
+              <button className="w-fit h-fit rounded-md px-4 py-2 ml-3 cursor-pointer mt-3 bg-secondaryBtn text-white font-medium">
+                Join
+              </button>
+            )}
           </div>
         </div>
 
