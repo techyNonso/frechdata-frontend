@@ -7,6 +7,9 @@ function HolderHero() {
   //get auth context
   const AuthState = useAuth();
 
+  //get update contexts
+  const [connectWallet, disConnectWallet] = useAuthUpdate();
+
   return (
     <div>
       <div className="pt-6 bg-bgGray h-auto px-5 md:px-16 pb-10 ">
@@ -80,7 +83,10 @@ function HolderHero() {
               </button>
             )}
             {!AuthState && (
-              <button className="w-fit h-fit rounded-md px-4 py-2 ml-3 cursor-pointer mt-3 bg-secondaryBtn text-white font-medium">
+              <button
+                onClick={connectWallet}
+                className="w-fit h-fit rounded-md px-4 py-2 ml-3 cursor-pointer mt-3 bg-secondaryBtn text-white font-medium"
+              >
                 Join
               </button>
             )}

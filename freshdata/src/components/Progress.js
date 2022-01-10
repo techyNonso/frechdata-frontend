@@ -50,9 +50,9 @@ function Progress({ status }) {
           ></div>
         </div>{" "}
         <div className="w-full grid grid-cols-2 mt-3">
-          <div className="col-span-2 flex justify-between lg:col-span-1 md:justify-start">
+          <div className="col-span-2  lg:col-span-1 ">
             {AuthState && (
-              <div>
+              <div className="flex justify-between md:justify-start">
                 <button className="w-12 bg-secondaryBtn text-white text-xs py-2 px-2 rounded-xl cursor-pointer">
                   No
                 </button>
@@ -62,7 +62,7 @@ function Progress({ status }) {
               </div>
             )}
             {!AuthState && (
-              <div>
+              <div className="flex justify-between md:justify-start">
                 <button className="w-12 bg-gray-400 text-white text-xs py-2 px-2 rounded-xl cursor-pointer">
                   No
                 </button>
