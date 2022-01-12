@@ -11,7 +11,7 @@ function CoinHolder() {
       <AuthProvider>
         <Header bg={"bg-bgBlue"} />
         <CoinHero />
-        <CoinHolderSecond />
+        <CoinHolderSecond page={"holder"} />
       </AuthProvider>
     </div>
   );

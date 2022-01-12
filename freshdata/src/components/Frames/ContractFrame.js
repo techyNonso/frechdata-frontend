@@ -1,8 +1,9 @@
 import React from "react";
 import ContractForm from "./ContractForm";
 import { useAuthUpdate, useAuth } from "../../contexts/AuthProvider";
+import CreatorCard from "./CreatorCard";
 
-function ContractFrame() {
+function ContractFrame(props) {
   //get auth context
   const AuthState = useAuth();
   //get update contexts
@@ -10,9 +11,7 @@ function ContractFrame() {
 
   return (
     <div>
-      <h2 className="pt-8 font-bold text-2xl pb-4">
-        Create Governance Contract
-      </h2>
+      <h2 className="pt-8 font-bold text-2xl pb-4">Governance Contract</h2>
       <p className="text-lg">
         <strong>NOTE:</strong> You will only be able to create a governance
         contract once, and you will not be able to change any information once
@@ -32,7 +31,10 @@ function ContractFrame() {
           </button>
         </div>
       )}
-      {AuthState && <ContractForm />}
+      {AuthState && props.contracts.length === 0 && <ContractForm />}
+      {AuthState && props.contracts.length > 0 && (
+        <CreatorCard contracts={props.contracts} />
+      )}
     </div>
   );
 }

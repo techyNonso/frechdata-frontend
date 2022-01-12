@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import coin from "../../images/coin.png";
 import { useMoralis } from "react-moralis";
 import { useAuthUpdate, useAuth } from "../../contexts/AuthProvider";
+import ProposalModal from "../Modal/ProposalModal";
+import { Link, useParams } from "react-router-dom";
 
 function HolderHero() {
+  const [modalVissible, setModal] = useState(false);
+  const [caution, setCaution] = useState(false);
+  const { address } = useParams();
+
   //get auth context
   const AuthState = useAuth();
 
@@ -73,7 +79,10 @@ function HolderHero() {
           </h2>
           <div className="flex w-fit m-auto sm:ml-0 sm:mt-0">
             {AuthState && (
-              <button className="w-fit h-fit rounded-full px-4 py-2 ml-3 cursor-pointer mt-3 bg-secondaryBtn text-white font-medium">
+              <button
+                onClick={() => setModal(true)}
+                className="w-fit h-fit rounded-full px-4 py-2 ml-3 cursor-pointer mt-3 bg-secondaryBtn text-white font-medium"
+              >
                 create proposal
               </button>
             )}
@@ -84,7 +93,9 @@ function HolderHero() {
             )}
             {!AuthState && (
               <button
-                onClick={connectWallet}
+                onClick={() => {
+                  connectWallet();
+                }}
                 className="w-fit h-fit rounded-md px-4 py-2 ml-3 cursor-pointer mt-3 bg-secondaryBtn text-white font-medium"
               >
                 Join
@@ -154,6 +165,7 @@ function HolderHero() {
           </div>
         </div>
       </div>
+      {modalVissible && <ProposalModal hide={setModal} address={address} />}
     </div>
   );
 }

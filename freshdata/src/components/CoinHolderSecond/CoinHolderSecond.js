@@ -1,10 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Card from "../Card/Card";
+import { useMoralis } from "react-moralis";
 
-function CoinHolderSecond() {
+function CoinHolderSecond(props) {
+  const { Moralis, isInitialized } = useMoralis();
+  const [contracts, setContracts] = useState([]);
+  const getContracts = async () => {
+    const Contracts = Moralis.Object.extend("ContractCreations");
+    const query = new Moralis.Query(Contracts);
+
+    const results = await query.find();
+    setContracts(results);
+  };
+
+  useEffect(() => {
+    let subscribed = true;
+
+    if (subscribed) {
+      //get address
+      if (isInitialized) {
+        getContracts();
+      }
+    }
+    return () => {
+      // cancel the subscription
+      subscribed = false;
+    };
+  }, [isInitialized]);
   return (
     <div>
-      <div className="px-5 md:px-16 h-auto py-16 bg-bgGray">
+      <div
+        className={`px-5 md:px-16 h-auto py-16 ${
+          props.page == "home" ? "bg-bgBlue" : "bg-bgGray"
+        }`}
+      >
         <div className="grid grid-cols-3">
           <h3 className=" font-bold block  text-2xl mb-6 col-span-3 sm:col-span-1 ">
             Join In
@@ -44,14 +73,9 @@ function CoinHolderSecond() {
           </div>
         </div>
         <div className="md:px-10 grid gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
+          {contracts.map((contract, index) => (
+            <Card key={index} contract={contract} />
+          ))}
         </div>
         <p className="text-primaryBtn text-sm pl-10 pt-10 cursor-pointer">
           View more...

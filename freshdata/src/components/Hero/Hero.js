@@ -10,12 +10,6 @@ function Hero() {
   const AuthState = useAuth();
   const { isAuthenticated, isWeb3Enabled, enableWeb3 } = useMoralis();
 
-  useEffect(() => {
-    if (!isWeb3Enabled && isAuthenticated) {
-      enableWeb3({ provider: "walletconnect" });
-      // console.log("web3 activated");
-    }
-  }, [isWeb3Enabled, isAuthenticated, enableWeb3, AuthState]);
   return (
     <div>
       <div className="grid grid-cols-4 pt-14 pb-10 h-auto px-5 md:px-16  bg-bgBlue ">
@@ -31,7 +25,9 @@ function Hero() {
 
             {!AuthState && (
               <div
-                onClick={connectWallet}
+                onClick={() => {
+                  connectWallet();
+                }}
                 className="bg-secondaryBtn w-fit text-white mt-6  font-medium leading-loose cursor-pointer rounded-2xl p-2 px-4 tracking-wider"
               >
                 Connect Wallet

@@ -1,12 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLinkClickHandler, useParams } from "react-router-dom";
 import Card from "../Card/Card";
 import ContractFrame from "../Frames/ContractFrame";
 import ProposalsFrame from "../Frames/ProposalsFrame";
 import AboutFrame from "../Frames/AboutFrame";
+import { useMoralis } from "react-moralis";
 
 function CreatorSecond() {
   let { section } = useParams();
+  const { Moralis, isInitialized } = useMoralis();
+  const [user, setUser] = useState("");
+  const [contracts, setContracts] = useState([]);
+
+  const getContracts = async () => {
+    let accounts = Moralis.User.current();
+    let user = accounts.get("accounts")[0];
+    setUser(user);
+    const Contracts = Moralis.Object.extend("ContractCreations");
+    const query = new Moralis.Query(Contracts);
+    query.equalTo("govOwner", user);
+    const results = await query.find();
+
+    setContracts(results);
+  };
+
+  useEffect(() => {
+    let subscribed = true;
+    if (subscribed) {
+      if (isInitialized) {
+        getContracts();
+      }
+    }
+    return () => {
+      // cancel the subscription
+      subscribed = false;
+    };
+  }, [isInitialized]);
   return (
     <div>
       <div className="px-5 md:px-16 h-auto py-10 bg-bgGray ">
@@ -74,7 +103,7 @@ function CreatorSecond() {
           </Link>
         </div>
 
-        {section == 1 && <ContractFrame />}
+        {section == 1 && <ContractFrame contracts={contracts} />}
         {section == 2 && <ProposalsFrame />}
         {section == 3 && <AboutFrame />}
       </div>

@@ -12,7 +12,7 @@ const client = create("https://ipfs.infura.io:5001/api/v0");
 function ContractForm() {
   const [modalVissible, setModal] = useState(false);
   const [caution, setCaution] = useState(false);
-  const [contractCreated, setContratedCreated] = useState(false);
+
   const [buffer, setBuffer] = useState(null);
   const [btnState, setBtnState] = useState(false);
   const [image, setImage] = useState(null);
@@ -114,7 +114,7 @@ function ContractForm() {
               className="form-select appearance-none  border border-solid border-gray-300 rounded-md transition  ease-in  w-full h-[40px] cursor-pointer py-2 px-3 text-gray-400 leading-tight text-xs focus:outline-primaryBtn focus:text-black  "
             >
               <option value="">Time lock delay</option>
-              <option value="1">1</option>
+
               <option value="2">2</option>
               <option value="3">3</option>
               <option value="4">4</option>
@@ -365,7 +365,6 @@ function ContractForm() {
       {modalVissible && (
         <Modal
           caution={caution}
-          contractCreated={contractCreated}
           hide={setModal}
           values={{
             image,

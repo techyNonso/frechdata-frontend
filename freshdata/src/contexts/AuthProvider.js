@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useMoralis } from "react-moralis";
+import { connectors } from "./config";
 
 const AuthContext = React.createContext();
 const AuthUpdateContext = React.createContext();
@@ -15,12 +16,12 @@ export function useAuthUpdate() {
 }
 
 export function AuthProvider({ children }) {
-  const { isAuthenticated, Moralis, authenticate } = useMoralis();
+  const { isAuthenticated, Moralis, authenticate, logout } = useMoralis();
   const [userState, setUser] = useState();
 
   //connect wallet
   const connectWallet = async () => {
-    const myuser = await authenticate({
+    /* const myuser = await authenticate({
       provider: "walletconnect",
       mobileLinks: [
         "rainbow",
@@ -30,18 +31,17 @@ export function AuthProvider({ children }) {
         "imtoken",
         "pillar",
       ],
-    });
+    });*/
+    await authenticate({ provider: "injected" });
 
     //set auth state from moralis
     setUser(isAuthenticated);
   };
 
   //disconnect wallet
-  const disConnectWallet = () => {
-    Moralis.User.logOut().then(() => {
-      //set auth state false
-      setUser(false);
-    });
+  const disConnectWallet = async () => {
+    await logout();
+    setUser(false);
   };
 
   useEffect(() => {

@@ -3,7 +3,9 @@ import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
 
 function Modal(props) {
   const [loading, setLoading] = useState(false);
-  const { Moralis } = useMoralis();
+  const [caution, setCaution] = useState(props.caution);
+  const [contractCreated, setContratedCreated] = useState(false);
+  const { isAuthenticated, isWeb3Enabled, enableWeb3, Moralis } = useMoralis();
   const contractProcessor = useWeb3ExecuteFunction();
 
   let lockDelayInSec,
@@ -30,9 +32,8 @@ function Modal(props) {
   mainTransactionValue = transactionValue ? transactionValue : 0;
 
   async function createGovernance() {
-    console.log(name);
     let options = {
-      contractAddress: "0xbf7fccda9a43c5e2a24db53f22056d387895d5f4",
+      contractAddress: "0xc80D3278851bd50A9aBdF2B5fe5dbA74CfF0A9fB",
       functionName: "createGovernor",
       abi: [
         {
@@ -80,7 +81,7 @@ function Modal(props) {
           type: "function",
         },
       ],
-      Params: {
+      params: {
         _governorName: name,
         _timelockDelay: lockDelayInSec,
         _votingDelay: voteDelayInSec,
@@ -90,25 +91,37 @@ function Modal(props) {
       },
       //msgValue: Moralis.Units.ETH(0.1),
     };
+
     await contractProcessor.fetch({
       params: options,
       onSuccess: () => {
         setLoading(false);
-        console.log("succes");
+        setCaution(false);
+        setContratedCreated(true);
       },
       onError: (err) => {
         setLoading(false);
         console.log(err);
       },
     });
+
+    /*const receipt = await Moralis.executeFunction(options);
+    console.log(receipt);*/
   }
+
+  /* useEffect(() => {
+    if (!isWeb3Enabled && isAuthenticated) {
+      enableWeb3({ provider: "walletconnect" });
+      //console.log("web3 activated");
+    }
+  }, [isWeb3Enabled, isAuthenticated, enableWeb3]);*/
 
   return (
     <div>
       <div className="fixed bg-black inset-0 bg-opacity-25 flex items-center justify-center px-3">
         {!loading && (
           <div className="bg-white w-full max-w-[320px] p-4 rounded-md text-justify ">
-            {props.caution && (
+            {caution && (
               <div>
                 <p>
                   <strong>NOTE:</strong> You will only be able to create a
@@ -138,7 +151,7 @@ function Modal(props) {
                 </div>
               </div>
             )}
-            {props.contractCreated && (
+            {contractCreated && (
               <div>
                 <div className="m-auto h-[60px] w-[60px] rounded-full text-white flex justify-center items-center bg-yesPoint">
                   j

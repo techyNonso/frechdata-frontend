@@ -12,14 +12,6 @@ function Nav() {
   const { isAuthenticated, isWeb3Enabled, enableWeb3, user } = useMoralis();
   const [menu, setMenu] = useState("hidden");
 
-  //console.log(AuthState, user, isAuthenticated);
-
-  useEffect(() => {
-    if (!isWeb3Enabled && isAuthenticated) {
-      enableWeb3({ provider: "walletconnect" });
-      //console.log("web3 activated");
-    }
-  }, [isWeb3Enabled, isAuthenticated, enableWeb3, AuthState]);
   return (
     <div>
       <div className="grid grid-cols-4 pt-6 relative">
