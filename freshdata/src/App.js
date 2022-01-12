@@ -14,7 +14,7 @@ function App() {
           <Route path="/" exact element={<Home />} />
           <Route path="/admin" exact element={<Admin />} />
           <Route path="/holder" exact element={<CoinHolder />} />
-          <Route path="/creator" exact element={<CoinCreator />} />
+          <Route path="/creator/:section" exact element={<CoinCreator />} />
           <Route path="/propsals" exact element={<Proposals />} />
         </Routes>
       </div>

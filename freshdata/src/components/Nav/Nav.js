@@ -29,7 +29,7 @@ function Nav() {
             <Link to="/">Home</Link>
           </div>
           <div className="hover:border-b-2 border-primaryBtn pb-1  cursor-pointer">
-            <Link to="/creator">creator</Link>
+            <Link to="/creator/1">creator</Link>
           </div>
           <div className="hover:border-b-2 border-primaryBtn pb-1  cursor-pointer">
             <Link to="/holder">Holder</Link>
@@ -90,7 +90,7 @@ function Nav() {
           <Link to="/">
             <div className="w-full py-2 hover:bg-bgGray pl-2">Home</div>
           </Link>
-          <Link to="/creator">
+          <Link to="/creator/1">
             <div className="w-full py-2 hover:bg-bgGray pl-2">Creator</div>
           </Link>
           <Link to="/holder">

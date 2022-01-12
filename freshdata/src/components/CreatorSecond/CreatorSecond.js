@@ -1,10 +1,12 @@
 import React from "react";
+import { Link, useLinkClickHandler, useParams } from "react-router-dom";
 import Card from "../Card/Card";
 import ContractFrame from "../Frames/ContractFrame";
 import ProposalsFrame from "../Frames/ProposalsFrame";
 import AboutFrame from "../Frames/AboutFrame";
 
 function CreatorSecond() {
+  let { section } = useParams();
   return (
     <div>
       <div className="px-5 md:px-16 h-auto py-10 bg-bgGray ">
@@ -40,20 +42,41 @@ function CreatorSecond() {
           </ol>
         </nav>
         <div className="flex w-fit  pt-4 border-b-2 px-2">
-          <div className="w-fit px-2 text-center font-medium text-xs border-b-2 border-b-primaryBtn cursor-pointer text-primaryBtn hover:border-b-primaryBtn ">
+          <Link
+            to="/creator/1"
+            className={`w-fit px-2 text-center font-medium text-xs border-b-2 ${
+              section == 1
+                ? "border-b-primaryBtn text-primaryBtn cursor-pointer"
+                : ""
+            }  hover:border-b-primaryBtn `}
+          >
             Governance contract
-          </div>
-          <div className="w-fit px-2 text-center font-medium text-xs  cursor-pointer hover:border-b-2 hover:border-b-primaryBtn ">
+          </Link>
+          <Link
+            to="/creator/2"
+            className={`w-fit px-2 text-center font-medium text-xs border-b-2 ${
+              section == 2
+                ? "border-b-primaryBtn text-primaryBtn cursor-pointer"
+                : ""
+            }  hover:border-b-primaryBtn `}
+          >
             Proposals
-          </div>
-          <div className="w-fit px-2 text-center font-medium text-xs  cursor-pointer hover:border-b-2 hover:border-b-primaryBtn ">
+          </Link>
+          <Link
+            to="/creator/3"
+            className={`w-fit px-2 text-center font-medium text-xs border-b-2 ${
+              section == 3
+                ? "border-b-primaryBtn text-primaryBtn cursor-pointer"
+                : ""
+            }  hover:border-b-primaryBtn `}
+          >
             About
-          </div>
+          </Link>
         </div>
 
-        <ContractFrame />
-        {/*<ProposalsFrame />*/}
-        {/*<AboutFrame />*/}
+        {section == 1 && <ContractFrame />}
+        {section == 2 && <ProposalsFrame />}
+        {section == 3 && <AboutFrame />}
       </div>
     </div>
   );

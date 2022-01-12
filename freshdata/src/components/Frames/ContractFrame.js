@@ -32,7 +32,7 @@ function ContractFrame() {
           </button>
         </div>
       )}
-      <ContractForm />
+      {AuthState && <ContractForm />}
     </div>
   );
 }
