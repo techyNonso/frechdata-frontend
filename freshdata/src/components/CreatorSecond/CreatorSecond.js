@@ -109,7 +109,7 @@ function CreatorSecond() {
           <ContractFrame contracts={contracts} loading={loading} />
         )}
         {section == 2 && <ProposalsFrame contracts={contracts} />}
-        {section == 3 && <AboutFrame />}
+        {section == 3 && <AboutFrame contracts={contracts} />}
       </div>
     </div>
   );
