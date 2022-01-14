@@ -11,6 +11,7 @@ function CreatorSecond() {
   const { Moralis, isInitialized } = useMoralis();
   const [user, setUser] = useState("");
   const [contracts, setContracts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const getContracts = async () => {
     let accounts = Moralis.User.current();
@@ -22,6 +23,7 @@ function CreatorSecond() {
     const results = await query.find();
 
     setContracts(results);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -103,8 +105,10 @@ function CreatorSecond() {
           </Link>
         </div>
 
-        {section == 1 && <ContractFrame contracts={contracts} />}
-        {section == 2 && <ProposalsFrame />}
+        {section == 1 && (
+          <ContractFrame contracts={contracts} loading={loading} />
+        )}
+        {section == 2 && <ProposalsFrame contracts={contracts} />}
         {section == 3 && <AboutFrame />}
       </div>
     </div>

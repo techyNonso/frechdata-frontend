@@ -31,8 +31,10 @@ function ContractFrame(props) {
           </button>
         </div>
       )}
-      {AuthState && props.contracts.length === 0 && <ContractForm />}
-      {AuthState && props.contracts.length > 0 && (
+      {AuthState && props.contracts.length === 0 && !props.loading && (
+        <ContractForm />
+      )}
+      {AuthState && props.contracts.length > 0 && !props.loading && (
         <CreatorCard contracts={props.contracts} />
       )}
     </div>

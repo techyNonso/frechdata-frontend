@@ -557,6 +557,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-top: 0.5rem;
 }
 
+.mr-2{
+  margin-right: 0.5rem;
+}
+
 .mt-20{
   margin-top: 5rem;
 }
@@ -663,6 +667,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   min-height: 100vh;
 }
 
+.min-h-\[300px\]{
+  min-height: 300px;
+}
+
 .w-full{
   width: 100%;
 }
@@ -719,6 +727,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .w-\[80px\]{
   width: 80px;
+}
+
+.w-\[40px\]{
+  width: 40px;
 }
 
 .w-\[200px\]{
@@ -864,6 +876,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .gap-2{
   gap: 0.5rem;
+}
+
+.gap-6{
+  gap: 1.5rem;
 }
 
 .space-x-1 > :not([hidden]) ~ :not([hidden]){
@@ -1192,6 +1208,14 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .pt-16{
   padding-top: 4rem;
+}
+
+.pl-7{
+  padding-left: 1.75rem;
+}
+
+.pl-8{
+  padding-left: 2rem;
 }
 
 .text-center{

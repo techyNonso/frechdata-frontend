@@ -1,7 +1,148 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Link, useLinkClickHandler, useParams } from "react-router-dom";
 import CoinCard from "../Card/CoinCard";
+import { useMoralis } from "react-moralis";
+import ProposalList from "../ProposalList/ProposalList";
 
-function ProposalsFrame() {
+function ProposalsFrame(props) {
+  const { Moralis, isInitialized } = useMoralis();
+  const [user, setUser] = useState("");
+  const [address, setAddress] = useState("");
+  const [name, setName] = useState("");
+  //const [address, setAddress] = useState("");
+  const [contracts, setContracts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [proposalList, setProposals] = useState([]);
+
+  const getProposalData = async (id, description, address) => {
+    const ABI = [
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "proposalId",
+            type: "uint256",
+          },
+        ],
+        name: "getProposalData",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "proposalId_",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "proposer_",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "startTime_",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "endTime_",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "startBlock_",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "forVotes_",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "againstVotes_",
+            type: "uint256",
+          },
+          {
+            internalType: "bool",
+            name: "canceled_",
+            type: "bool",
+          },
+          {
+            internalType: "bool",
+            name: "executed_",
+            type: "bool",
+          },
+          {
+            internalType: "enum VoteGovernorAlpha.ProposalState",
+            name: "state_",
+            type: "uint8",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+    ];
+
+    const options = {
+      contractAddress: address,
+      functionName: "getProposalData",
+      abi: ABI,
+      params: {
+        proposalId: id,
+      },
+    };
+
+    await Moralis.enableWeb3();
+
+    let proposal = await Moralis.executeFunction(options);
+
+    return {
+      data: proposal,
+      description: description,
+    };
+  };
+
+  const getGovernorProposals = async () => {
+    let address = props.contracts[0].get("govAddress");
+    setName(props.contracts[0].get("govName"));
+    setAddress(address);
+    const Proposals = Moralis.Object.extend("Proposals");
+    const query = new Moralis.Query(Proposals);
+    query.equalTo("govAddress", address);
+    const results = await query.find();
+
+    if (results.length > 0) {
+      let description;
+      let mydata;
+      let hexId;
+      let _64BytesId;
+      let proposalId;
+
+      let proposalData = [];
+      // Do something with the returned Moralis.Object values
+      for (let i = 0; i < results.length; i++) {
+        const object = results[i];
+        description = object.get("description");
+        mydata = object.get("proposalId");
+        hexId = mydata.events["0"].raw.data.substring(2);
+        _64BytesId = hexId.match(/.{1,64}/g)[1];
+        proposalId = _64BytesId.charAt(_64BytesId.length - 1);
+        let detail = await getProposalData(proposalId, description, address);
+        proposalData = [...proposalData, detail];
+      }
+      setProposals(proposalData);
+      setLoading(false);
+      //sieave(proposalList);
+    } else {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isInitialized && props.contracts.length > 0) {
+      getGovernorProposals();
+    }
+  }, [isInitialized, props.contracts]);
+
   return (
     <div>
       <h2 className="pt-8 font-bold text-2xl pb-4">Your proposals</h2>
@@ -55,9 +196,21 @@ function ProposalsFrame() {
             </div>
           </div>
         </div>
-        <CoinCard status={0} />
-        <CoinCard status={1} />
-        <CoinCard status={2} />
+        <div>
+          {loading && (
+            <div className="font-semibold text-lg text-gray-600">
+              Loading Proposals
+            </div>
+          )}
+          {proposalList.length > 0 && !loading && (
+            <ProposalList proposals={proposalList} govName={name} />
+          )}
+          {proposalList.length === 0 && !loading && (
+            <div className="font-semibold text-lg text-gray-600">
+              No Proposals Found
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

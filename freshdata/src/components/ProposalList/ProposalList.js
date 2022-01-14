@@ -43,6 +43,7 @@ function ProposalList(props) {
               status={Number(proposal.data.state_)}
               data={proposal.data}
               description={proposal.description}
+              name={props.govName}
             ></CoinCard>
           );
         return <span key={index}></span>;

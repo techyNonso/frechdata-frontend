@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import coin from "../../images/coin.png";
 import { useMoralis } from "react-moralis";
 import { useAuthUpdate, useAuth } from "../../contexts/AuthProvider";
@@ -7,14 +7,58 @@ import { Link, useParams } from "react-router-dom";
 
 function HolderHero() {
   const [modalVissible, setModal] = useState(false);
+  const [name, setName] = useState("");
+  const [votesNumber, setVotesNumber] = useState(0);
+  const [proposalsNumber, setProposalsNumber] = useState(0);
   const [caution, setCaution] = useState(false);
   const { address } = useParams();
+  const {
+    isAuthenticated,
+    isWeb3Enabled,
+    enableWeb3,
+    Moralis,
+    isInitialized,
+    isWeb3EnableLoading,
+  } = useMoralis();
 
   //get auth context
   const AuthState = useAuth();
 
   //get update contexts
   const [connectWallet, disConnectWallet] = useAuthUpdate();
+
+  const getGorvernorName = async () => {
+    const Contracts = Moralis.Object.extend("GovernanceInstanceCreations");
+    const query = new Moralis.Query(Contracts);
+    query.equalTo("govAddress", address);
+    const results = await query.find();
+    let name = results[0].get("govName");
+    setName(name);
+  };
+  const getVotes = async () => {
+    const Votes = Moralis.Object.extend("Votes");
+    const query = new Moralis.Query(Votes);
+    query.equalTo("govAddress", address);
+    const results = await query.find();
+    let voteNumber = results.length;
+    setVotesNumber(voteNumber);
+  };
+  const getProposals = async () => {
+    const Proposals = Moralis.Object.extend("Proposals");
+    const query = new Moralis.Query(Proposals);
+    query.equalTo("govAddress", address);
+    const results = await query.find();
+    let proposalsNumber = results.length;
+    setProposalsNumber(proposalsNumber);
+  };
+
+  useEffect(() => {
+    if (isInitialized) {
+      getGorvernorName();
+      getVotes();
+      getProposals();
+    }
+  }, [isInitialized]);
 
   return (
     <div>
@@ -62,7 +106,7 @@ function HolderHero() {
                   ></path>
                 </svg>
                 <span className="ml-1 text-sm font-medium text-black">
-                  Lorem coin
+                  {name}
                 </span>
               </div>
             </li>
@@ -75,7 +119,7 @@ function HolderHero() {
             <img src={coin} className="w-full h-full" alt="coin" />
           </div>
           <h2 className="font-medium leading-loose text-3xl pl-4 text-center sm:text-left">
-            Lorem Coin
+            {name}
           </h2>
           <div className="flex w-fit m-auto sm:ml-0 sm:mt-0">
             {AuthState && (
@@ -110,11 +154,11 @@ function HolderHero() {
             <div className="text-center text-gray-500">Members</div>
           </div>
           <div className="border-2 p-3 ">
-            <div className="text-center font-medium ">73k</div>
+            <div className="text-center font-medium ">{proposalsNumber}</div>
             <div className="text-center text-gray-500">Proposals</div>
           </div>
           <div className="border-2 p-3 ">
-            <div className="text-center font-medium ">73k</div>
+            <div className="text-center font-medium ">{votesNumber}</div>
             <div className="text-center text-gray-500">Voters</div>
           </div>
         </div>

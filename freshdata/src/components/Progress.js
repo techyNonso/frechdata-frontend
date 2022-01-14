@@ -3,7 +3,7 @@ import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
 import { useAuthUpdate, useAuth } from "../contexts/AuthProvider";
 import { Link, useParams } from "react-router-dom";
 
-function Progress({ status, data }) {
+function Progress({ status, data, voteCount, totalVotes }) {
   //get auth context
   const AuthState = useAuth();
   const [user, setUser] = useState("");
@@ -130,6 +130,15 @@ function Progress({ status, data }) {
     if (yes === no) return "Draw";
   };
 
+  const getSizeYes = () => {
+    let result = yesPerc(forYes(), forNo());
+    return result + "%";
+  };
+  const getSizeNo = () => {
+    let result = noPerc(forYes(), forNo());
+    return result + "%";
+  };
+
   useEffect(() => {
     if (isInitialized) {
       let accounts = Moralis.User.current();
@@ -173,21 +182,23 @@ function Progress({ status, data }) {
             </p>
           </div>
 
-          <div className="col-span-1  text-right text-xs ">7000 votes</div>
+          <div className="col-span-1  text-right text-xs ">
+            {totalVotes} {totalVotes === 1 ? "vote" : "Votes"}
+          </div>
         </div>
         <div className="w-full h-2 bg-gray-300 rounded-full relative mt-4 sm:mt-0">
           <div
             className="rounded-l h-full bg-yesPoint inline-block absolute top-0 left-0"
-            style={{ width: "70%" }}
+            style={{ width: `${getSizeYes()}` }}
           ></div>
           <div
             className="rounded-r h-full bg-noPoint inline-block absolute top-0 right-0"
-            style={{ width: "30%" }}
+            style={{ width: `${getSizeNo()}` }}
           ></div>
         </div>{" "}
         <div className="w-full grid grid-cols-2 mt-3">
           <div className="col-span-2  lg:col-span-1 ">
-            {AuthState && (
+            {AuthState && voteCount === 0 && (
               <div className="flex justify-between md:justify-start">
                 <button
                   onClick={() => delegate(false)}
@@ -221,9 +232,7 @@ function Progress({ status, data }) {
               ({yesPerc(forYes(), forNo())}%)
             </span>
             <span className="font-semibold text-xs pl-2">Quorom:</span>
-            <span className="text-xs pl-1">
-              ({verdict(forYes(), forNo())}%)
-            </span>
+            <span className="text-xs pl-1">({verdict(forYes(), forNo())})</span>
           </div>
         </div>
       </div>
@@ -241,7 +250,9 @@ function Progress({ status, data }) {
             <p className="text-xs ml-2">2100 (30%)</p>
           </div>
 
-          <div className="col-span-1  text-right text-xs ">7000 votes</div>
+          <div className="col-span-1  text-right text-xs ">
+            {totalVotes} {totalVotes === 1 ? "vote" : "Votes"}
+          </div>
         </div>
         <div className="w-full h-2 bg-gray-300 rounded-full relative mt-4 sm:mt-0">
           <div
@@ -260,9 +271,7 @@ function Progress({ status, data }) {
               ({yesPerc(forYes(), forNo())}%)
             </span>
             <span className="font-semibold text-xs pl-2">Quorom:</span>
-            <span className="text-xs pl-1">
-              ({verdict(forYes(), forNo())}%)
-            </span>
+            <span className="text-xs pl-1">({verdict(forYes(), forNo())})</span>
           </div>
         </div>
       </div>

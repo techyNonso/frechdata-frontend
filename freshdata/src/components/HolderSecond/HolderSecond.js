@@ -5,6 +5,8 @@ import { Link, useParams } from "react-router-dom";
 
 function HolderSecond() {
   const [user, setUser] = useState("");
+  const [name, setName] = useState("");
+  const [loading, setLoading] = useState(true);
   const [proposalList, setProposals] = useState([]);
   const {
     isAuthenticated,
@@ -16,27 +18,6 @@ function HolderSecond() {
   } = useMoralis();
   const { address } = useParams();
   const contractProcessor = useWeb3ExecuteFunction();
-
-  //sieve
-  const sieave = (list) => {
-    console.log(list);
-    let uniqueChars = [];
-    list.forEach((item) => {
-      if (uniqueChars.length > 0) {
-        uniqueChars.forEach((curr, i) => {
-          if (item.data == curr.data) {
-            uniqueChars[i] = item;
-          } else {
-            uniqueChars.push(item);
-          }
-        });
-      } else {
-        uniqueChars.push(item);
-      }
-    });
-    console.log(uniqueChars);
-    setProposals(uniqueChars);
-  };
 
   const getProposalData = async (id, description) => {
     const ABI = [
@@ -119,14 +100,6 @@ function HolderSecond() {
 
     let proposal = await Moralis.executeFunction(options);
 
-    /*setProposals([
-      ...proposalList,
-      {
-        data: proposal,
-        description: description,
-      },
-    ]);*/
-
     return {
       data: proposal,
       description: description,
@@ -159,8 +132,18 @@ function HolderSecond() {
         proposalData = [...proposalData, detail];
       }
       setProposals(proposalData);
+      setLoading(false);
       //sieave(proposalList);
     }
+  };
+
+  const getGorvernorName = async () => {
+    const Contracts = Moralis.Object.extend("GovernanceInstanceCreations");
+    const query = new Moralis.Query(Contracts);
+    query.equalTo("govAddress", address);
+    const results = await query.find();
+    let name = results[0].get("govName");
+    setName(name);
   };
 
   useEffect(() => {
@@ -169,7 +152,7 @@ function HolderSecond() {
     if (subscribed) {
       if (isInitialized) {
         getGovernorProposals();
-        //getProposalCount();
+        getGorvernorName();
         let accounts = Moralis.User.current();
         let user = accounts.get("accounts")[0];
         setUser(user);
@@ -184,9 +167,15 @@ function HolderSecond() {
   return (
     <div>
       <div className="px-5 md:px-16 h-auto min-h-screen pt-2 pb-6 bg-bgGray">
-        {proposalList.length > 0 ? (
-          <ProposalList proposals={proposalList} />
-        ) : (
+        {loading && (
+          <div className="font-semibold text-lg text-gray-600">
+            Loading Proposals
+          </div>
+        )}
+        {proposalList.length > 0 && !loading && (
+          <ProposalList proposals={proposalList} govName={name} />
+        )}
+        {proposalList.length === 0 && !loading && (
           <div className="font-semibold text-lg text-gray-600">
             No Proposals Found
           </div>
