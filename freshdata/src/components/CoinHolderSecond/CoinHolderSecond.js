@@ -6,7 +6,7 @@ function CoinHolderSecond(props) {
   const { Moralis, isInitialized } = useMoralis();
   const [contracts, setContracts] = useState([]);
   const getContracts = async () => {
-    const Contracts = Moralis.Object.extend("ContractCreations");
+    const Contracts = Moralis.Object.extend("GovernanceInstanceCreations");
     const query = new Moralis.Query(Contracts);
 
     const results = await query.find();

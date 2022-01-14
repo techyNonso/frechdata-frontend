@@ -33,7 +33,7 @@ function Modal(props) {
 
   async function createGovernance() {
     let options = {
-      contractAddress: "0xc80D3278851bd50A9aBdF2B5fe5dbA74CfF0A9fB",
+      contractAddress: "0x8728f06Cabc2850B2Faa6Ab6F007129cc3547c95",
       functionName: "createGovernor",
       abi: [
         {
@@ -98,6 +98,7 @@ function Modal(props) {
         setLoading(false);
         setCaution(false);
         setContratedCreated(true);
+        window.location.reload();
       },
       onError: (err) => {
         setLoading(false);

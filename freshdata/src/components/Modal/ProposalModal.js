@@ -109,8 +109,9 @@ function ProposalModal(props) {
       },
       //msgValue: Moralis.Units.ETH(0.1),
     };
+    await Moralis.enableWeb3();
 
-    await contractProcessor.fetch({
+    /*await contractProcessor.fetch({
       params: options,
       onSuccess: () => {
         setLoading(false);
@@ -119,12 +120,36 @@ function ProposalModal(props) {
       },
       onError: (err) => {
         setLoading(false);
+        setCaution(false);
+        setForm(false);
         console.log(err);
       },
-    });
+    });*/
+    const id = await Moralis.executeFunction(options);
+    
+    const Proposals = Moralis.Object.extend("Proposals");
+    const proposals = new Proposals();
 
-    /*const receipt = await Moralis.executeFunction(options);
-    console.log(receipt);*/
+    proposals.set("proposalId", id);
+    proposals.set("description", proposal);
+    proposals.set("proposer", user);
+    proposals.set("govAddress", props.address);
+
+    proposals.save().then(
+      (proposals) => {
+        // Execute any logic that should take place after the object is saved.
+        //alert("New object created with objectId: " + proposals.id);
+        setLoading(false);
+        setCaution(false);
+        setProposalCreated(true);
+        window.location.reload();
+      },
+      (error) => {
+        // Execute any logic that should take place if the save fails.
+        // error is a Moralis.Error with an error code and message.
+        alert("Failed to create new object, with error code: " + error.message);
+      }
+    );
   }
 
   useEffect(() => {
@@ -197,7 +222,17 @@ function ProposalModal(props) {
                   ></textarea>
                 </div>
 
-                <div className="flex justify-center ">
+                <div className="flex justify-center space-x-2  ">
+                  <span
+                    className="py-2 px-2 mt-2   text-xs text-primaryBtn bg-bgGray rounded-md cursor-pointer hover:underline "
+                    onClick={() => {
+                      setProposal("");
+                      setForm(false);
+                      props.hide(false);
+                    }}
+                  >
+                    Cancel
+                  </span>
                   <span
                     className="py-2 px-2 mt-2   text-xs bg-primaryBtn text-white rounded-md cursor-pointer "
                     onClick={() => {

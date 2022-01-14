@@ -16,7 +16,7 @@ function CreatorSecond() {
     let accounts = Moralis.User.current();
     let user = accounts.get("accounts")[0];
     setUser(user);
-    const Contracts = Moralis.Object.extend("ContractCreations");
+    const Contracts = Moralis.Object.extend("GovernanceInstanceCreations");
     const query = new Moralis.Query(Contracts);
     query.equalTo("govOwner", user);
     const results = await query.find();

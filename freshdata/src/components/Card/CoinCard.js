@@ -24,15 +24,11 @@ function CoinCard(props) {
             </div>
 
             <p className="text-xs pl-6 sm:pl-8">By: Tremendous crypto group</p>
-            <p className="text-sm pt-2 font-normal">
-              This proposal is aimed at producing a community signal for proper
-              management of treasury spendings within the decentralized
-              community.
-            </p>
+            <p className="text-sm pt-2 font-normal">{props.description}</p>
           </div>
         </div>
         <div className="col-span-2 sm:col-span-1 px-2 flex  items-center mt-10 sm:mt-0">
-          <Progress status={props.status} />
+          <Progress status={props.status} data={props.data} />
         </div>
       </div>
     </div>
