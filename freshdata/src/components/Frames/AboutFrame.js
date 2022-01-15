@@ -6,6 +6,7 @@ function AboutFrame(props) {
   const [oldAbout, setOldAbout] = useState("");
   const [address, setAddress] = useState("");
   const [loading, setLoading] = useState(true);
+  const [reload, setReload] = useState(false);
 
   const { isAuthenticated, isWeb3Enabled, enableWeb3, Moralis, isInitialized } =
     useMoralis();
@@ -24,7 +25,7 @@ function AboutFrame(props) {
     results[0].save().then((data) => {
       // Now let's update it with some new data. In this case, only canFly and energy
       // will get sent to the cloud. ownerName hasn't changed.
-      window.location.reload();
+      setReload(true);
     });
   };
 
@@ -49,7 +50,7 @@ function AboutFrame(props) {
     if (isInitialized && props.contracts.length > 0) {
       getDetails();
     }
-  }, [isInitialized, props.contracts]);
+  }, [isInitialized, props.contracts, reload]);
 
   return (
     <div>

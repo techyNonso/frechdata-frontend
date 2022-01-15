@@ -3,19 +3,31 @@ import Admin from "./pages/Admin";
 import CoinHolder from "./pages/CoinHolder";
 import CoinCreator from "./pages/CoinCreator";
 import Home from "./pages/Home";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Proposals from "./pages/Proposals";
 import { useMoralis } from "react-moralis";
 import { useEffect } from "react";
 
 function App() {
-  const { isWeb3Enabled, enableWeb3, isAuthenticated, isWeb3EnableLoading } =
-    useMoralis();
+  const {
+    isWeb3Enabled,
+    enableWeb3,
+    isAuthenticated,
+    isWeb3EnableLoading,
+    Moralis,
+    account,
+  } = useMoralis();
 
   useEffect(() => {
     if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading) enableWeb3();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, isWeb3Enabled]);
+
   return (
     <Router>
       <div>
@@ -29,6 +41,8 @@ function App() {
             exact
             element={<Proposals />}
           />
+
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>
     </Router>

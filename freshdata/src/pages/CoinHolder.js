@@ -7,7 +7,7 @@ import { AuthProvider } from "../contexts/AuthProvider";
 
 function CoinHolder() {
   return (
-    <div className="font-headFont ">
+    <div className="font-headFont relative  ">
       <AuthProvider>
         <Header bg={"bg-bgBlue"} />
         <CoinHero />

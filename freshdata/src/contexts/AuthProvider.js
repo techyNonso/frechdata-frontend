@@ -16,7 +16,14 @@ export function useAuthUpdate() {
 }
 
 export function AuthProvider({ children }) {
-  const { isAuthenticated, Moralis, authenticate, logout } = useMoralis();
+  const {
+    isAuthenticated,
+    Moralis,
+    authenticate,
+    logout,
+    account,
+    isInitialized,
+  } = useMoralis();
   const [userState, setUser] = useState();
 
   //connect wallet
@@ -44,9 +51,26 @@ export function AuthProvider({ children }) {
     setUser(false);
   };
 
+  const evaluateAccounts = async (account) => {
+    let accountsList = Moralis.User.current();
+    if (isAuthenticated && accountsList) {
+      let user = accountsList.get("accounts")[0];
+      if (account && account !== user) {
+        await logout();
+        await authenticate({ provider: "injected" });
+
+        setUser(isAuthenticated);
+        window.location.reload();
+      }
+    }
+  };
+
   useEffect(() => {
     setUser(isAuthenticated);
-  }, [isAuthenticated]);
+    if (isInitialized) {
+      evaluateAccounts(account);
+    }
+  }, [isAuthenticated, account, isInitialized]);
 
   return (
     <AuthContext.Provider value={userState}>

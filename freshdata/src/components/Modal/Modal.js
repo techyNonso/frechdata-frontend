@@ -7,6 +7,7 @@ function Modal(props) {
   const [contractCreated, setContratedCreated] = useState(false);
   const { isAuthenticated, isWeb3Enabled, enableWeb3, Moralis } = useMoralis();
   const contractProcessor = useWeb3ExecuteFunction();
+  const [reload, setReload] = useState(false);
 
   let lockDelayInSec,
     voteDelayInSec,
@@ -25,7 +26,7 @@ function Modal(props) {
     transactionValue,
   } = props.values;
   lockDelayInSec = Number(lockDelay) * 24 * 60 * 60;
-  voteDelayInSec = Number(voteDelay) * 24 * 60 * 60;
+  voteDelayInSec = Number(voteDelay) * 2; //4 * 60 * 60;
   votePeriodInSec = Number(votePeriod) * 24 * 60 * 60;
   voteThresholdInSec = Number(voteThreshold) * 24 * 60 * 60;
   proposalThresholdInSec = Number(lockDelay) * 24 * 60 * 60;

@@ -8,6 +8,7 @@ function Progress({ status, data, voteCount, totalVotes }) {
   const AuthState = useAuth();
   const [user, setUser] = useState("");
   const [account, setAccount] = useState("");
+  const [reload, setReload] = useState(false);
 
   const { isAuthenticated, isWeb3Enabled, enableWeb3, Moralis, isInitialized } =
     useMoralis();
@@ -105,7 +106,7 @@ function Progress({ status, data, voteCount, totalVotes }) {
 
     votes.save().then(
       (votes) => {
-        window.location.reload();
+        setReload(true);
       },
       (error) => {
         // Execute any logic that should take place if the save fails.
@@ -161,7 +162,7 @@ function Progress({ status, data, voteCount, totalVotes }) {
       let user = accounts.get("accounts")[0];
       setUser(user);
     }
-  }, [isInitialized]);
+  }, [isInitialized, reload]);
 
   if (status === 0) {
     return (

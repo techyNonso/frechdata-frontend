@@ -4,6 +4,7 @@ import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
 function ProposalModal(props) {
   const [loading, setLoading] = useState(false);
   const [caution, setCaution] = useState(false);
+
   const [account, setAccount] = useState("");
   const [user, setUser] = useState("");
   const [proposal, setProposal] = useState("");
@@ -163,6 +164,7 @@ function ProposalModal(props) {
   useEffect(() => {
     if (isInitialized) {
       let accounts = Moralis.User.current();
+      setAccount(accounts);
       let user = accounts.get("accounts")[0];
       setUser(user);
     }
@@ -170,7 +172,7 @@ function ProposalModal(props) {
 
   return (
     <div>
-      <div className="fixed bg-black inset-0 bg-opacity-25 flex items-center justify-center px-3">
+      <div className="fixed z-50 bg-black inset-0 bg-opacity-25 flex items-center justify-center px-3">
         {!loading && (
           <div className="bg-white w-full max-w-[400px] p-4 rounded-md text-justify ">
             {caution && (

@@ -113,6 +113,7 @@ function HolderSecond() {
     const query = new Moralis.Query(Proposals);
     query.equalTo("govAddress", address);
     const results = await query.find();
+
     if (results.length > 0) {
       let description;
       let mydata;
@@ -136,6 +137,8 @@ function HolderSecond() {
       setProposals(proposalData);
       setLoading(false);
       //sieave(proposalList);
+    } else {
+      setLoading(false);
     }
   };
 
