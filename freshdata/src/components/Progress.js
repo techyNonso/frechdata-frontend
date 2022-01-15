@@ -125,15 +125,21 @@ function Progress({ status, data, voteCount, totalVotes }) {
   };
 
   const yesPerc = (yes, no) => {
+    yes = isNaN(yes) || Number(yes) || 0;
+    no = isNaN(no) || Number(no) || 0;
     const result = (yes / (yes + no)) * 100;
     return result.toFixed();
   };
   const noPerc = (yes, no) => {
+    yes = isNaN(yes) || Number(yes) || 0;
+    no = isNaN(no) || Number(no) || 0;
     const result = (no / (yes + no)) * 100;
     return result.toFixed();
   };
 
   const verdict = (yes, no) => {
+    yes = isNaN(yes) || Number(yes) || 0;
+    no = isNaN(no) || Number(no) || 0;
     if (yes > no) return "Yes";
     if (yes < no) return "No";
     if (yes === no) return "Draw";
