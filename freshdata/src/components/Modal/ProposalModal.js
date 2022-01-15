@@ -4,6 +4,7 @@ import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
 function ProposalModal(props) {
   const [loading, setLoading] = useState(false);
   const [caution, setCaution] = useState(false);
+  const [account, setAccount] = useState("");
   const [user, setUser] = useState("");
   const [proposal, setProposal] = useState("");
   const [proposalCreated, setProposalCreated] = useState(false);
@@ -17,43 +18,50 @@ function ProposalModal(props) {
   };
 
   async function delegate() {
-    let options = {
-      contractAddress: "0x364ba491b1201a9c0bd326144cd6472e5ff299f1",
-      functionName: "delegate",
-      abi: [
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "delegatee",
-              type: "address",
-            },
-          ],
-          name: "delegate",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
+    if (!account.get("isDelegated")) {
+      let options = {
+        contractAddress: "0x364ba491b1201a9c0bd326144cd6472e5ff299f1",
+        functionName: "delegate",
+        abi: [
+          {
+            inputs: [
+              {
+                internalType: "address",
+                name: "delegatee",
+                type: "address",
+              },
+            ],
+            name: "delegate",
+            outputs: [],
+            stateMutability: "nonpayable",
+            type: "function",
+          },
+        ],
+        params: {
+          delegatee: user,
         },
-      ],
-      params: {
-        delegatee: user,
-      },
-      //msgValue: Moralis.Units.ETH(0.1),
-    };
+        //msgValue: Moralis.Units.ETH(0.1),
+      };
 
-    await contractProcessor.fetch({
-      params: options,
-      onSuccess: () => {
-        makeProposal();
-      },
-      onError: (err) => {
-        setLoading(false);
-        console.log(err);
-      },
-    });
+      await contractProcessor.fetch({
+        params: options,
+        onSuccess: () => {
+          account.set("isDelegated", true);
+          account.save().then((data) => {
+            makeProposal();
+          });
+        },
+        onError: (err) => {
+          setLoading(false);
+          console.log(err);
+        },
+      });
 
-    /*const receipt = await Moralis.executeFunction(options);
-    console.log(receipt);*/
+      /*const receipt = await Moralis.executeFunction(options);
+      console.log(receipt);*/
+    } else {
+      makeProposal();
+    }
   }
   async function makeProposal() {
     let options = {
@@ -126,7 +134,7 @@ function ProposalModal(props) {
       },
     });*/
     const id = await Moralis.executeFunction(options);
-    
+
     const Proposals = Moralis.Object.extend("Proposals");
     const proposals = new Proposals();
 

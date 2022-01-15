@@ -20,7 +20,7 @@ function AboutFrame(props) {
     const query = new Moralis.Query(Governance);
     query.equalTo("govAddress", address);
     const results = await query.find();
-    results[0].addUnique("about", about);
+    results[0].set("about", [about]);
     results[0].save().then((data) => {
       // Now let's update it with some new data. In this case, only canFly and energy
       // will get sent to the cloud. ownerName hasn't changed.
@@ -36,8 +36,11 @@ function AboutFrame(props) {
     let address = props.contracts[0].get("govAddress");
 
     setAddress(address);
-    if (props.contracts[0].get("about"))
-      setOldAbout(props.contracts[0].get("about"));
+    if (
+      props.contracts[0].get("about") &&
+      props.contracts[0].get("about").length > 0
+    )
+      setOldAbout(props.contracts[0].get("about")[0]);
 
     setLoading(false);
   };
@@ -66,7 +69,7 @@ function AboutFrame(props) {
       <div className="mt-8">
         <div>
           {oldAbout && !loading && (
-            <p className="text-xs text-justify leading-relaxed">{oldAbout}</p>
+            <p className="text-lg text-justify leading-relaxed">{oldAbout}</p>
           )}
         </div>
 

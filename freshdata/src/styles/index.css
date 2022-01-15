@@ -1154,8 +1154,8 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding-top: 1rem;
 }
 
-.pl-6{
-  padding-left: 1.5rem;
+.pl-8{
+  padding-left: 2rem;
 }
 
 .pt-2{
@@ -1208,14 +1208,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .pt-16{
   padding-top: 4rem;
-}
-
-.pl-7{
-  padding-left: 1.75rem;
-}
-
-.pl-8{
-  padding-left: 2rem;
 }
 
 .text-center{

@@ -203,7 +203,11 @@ function ProposalsFrame(props) {
             </div>
           )}
           {proposalList.length > 0 && !loading && (
-            <ProposalList proposals={proposalList} govName={name} />
+            <ProposalList
+              proposals={proposalList}
+              govName={name}
+              address={address}
+            />
           )}
           {proposalList.length === 0 && !loading && (
             <div className="font-semibold text-lg text-gray-600">

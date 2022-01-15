@@ -163,7 +163,7 @@ function HolderHero() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 mt-6">
+        {/* <div className="grid grid-cols-2 mt-6">
           <div className="col-span-2 sm:col-span-1">
             <div className="flex w-fit px-3 border-b-2">
               <div className="w-[100px] text-center font-medium text-xs border-b-2 border-b-primaryBtn cursor-pointer text-primaryBtn hover:border-b-primaryBtn ">
@@ -207,7 +207,7 @@ function HolderHero() {
               </div>
             </form>
           </div>
-        </div>
+        </div>*/}
       </div>
       {modalVissible && <ProposalModal hide={setModal} address={address} />}
     </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
 import ProposalList from "../ProposalList/ProposalList";
 import { Link, useParams } from "react-router-dom";
+import ProposalAbout from "../ProposalList/ProposalAbout";
 
 function HolderSecond() {
   const [user, setUser] = useState("");
@@ -16,7 +17,8 @@ function HolderSecond() {
     isInitialized,
     isWeb3EnableLoading,
   } = useMoralis();
-  const { address } = useParams();
+  const { address, section } = useParams();
+
   const contractProcessor = useWeb3ExecuteFunction();
 
   const getProposalData = async (id, description) => {
@@ -167,19 +169,84 @@ function HolderSecond() {
   return (
     <div>
       <div className="px-5 md:px-16 h-auto min-h-screen pt-2 pb-6 bg-bgGray">
-        {loading && (
-          <div className="font-semibold text-lg text-gray-600">
-            Loading Proposals
+        <div className="grid grid-cols-2 mt-6 mb-4">
+          <div className="col-span-2 sm:col-span-1">
+            <div className="flex w-fit px-3 border-b-2">
+              <Link
+                to={`/propsals/${address}/1`}
+                className={`w-[100px] text-center font-medium text-xs   ${
+                  section == 1
+                    ? "border-b-2 border-b-primaryBtn text-primaryBtn cursor-pointer"
+                    : ""
+                }  cursor-pointer  hover:border-b-2  hover:border-b-primaryBtn `}
+              >
+                Proposals
+              </Link>
+              <Link
+                to={`/propsals/${address}/2`}
+                className={`w-[100px] text-center font-medium text-xs  ${
+                  section == 2
+                    ? "border-b-2 border-b-primaryBtn text-primaryBtn cursor-pointer"
+                    : ""
+                }  cursor-pointer hover:border-b-2 hover:border-b-primaryBtn `}
+              >
+                About
+              </Link>
+            </div>
+          </div>
+          <div className="col-span-2 sm:col-span-1 mt-4 sm:mt-0">
+            <form>
+              <div className="relative text-gray-400 text-right  ">
+                <span className="absolute y-0 l-0 ">
+                  <button
+                    type="submit"
+                    className="p-1 pt-2 pl-2 focus:outline-none focus:shadow-outline"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                </span>
+
+                <input
+                  type="text"
+                  name="q"
+                  className="py-2 text-sm text-gray-500 rounded-full w-full max-w-md pl-10 focus:outline-none  shadow-md cursor-pointer "
+                  placeholder="Search..."
+                  autoComplete="off"
+                />
+              </div>
+            </form>
+          </div>
+        </div>
+        {section == 1 && (
+          <div>
+            {loading && (
+              <div className="font-semibold text-lg text-gray-600">
+                Loading Proposals
+              </div>
+            )}
+            {proposalList.length > 0 && !loading && (
+              <ProposalList proposals={proposalList} govName={name} />
+            )}
+            {proposalList.length === 0 && !loading && (
+              <div className="font-semibold text-lg text-gray-600">
+                No Proposals Found
+              </div>
+            )}
           </div>
         )}
-        {proposalList.length > 0 && !loading && (
-          <ProposalList proposals={proposalList} govName={name} />
-        )}
-        {proposalList.length === 0 && !loading && (
-          <div className="font-semibold text-lg text-gray-600">
-            No Proposals Found
-          </div>
-        )}
+
+        {section == 2 && <ProposalAbout />}
       </div>
     </div>
   );

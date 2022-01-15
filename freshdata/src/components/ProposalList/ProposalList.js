@@ -44,6 +44,7 @@ function ProposalList(props) {
               data={proposal.data}
               description={proposal.description}
               name={props.govName}
+              address={props.address ? props.address : address}
             ></CoinCard>
           );
         return <span key={index}></span>;

@@ -7,6 +7,7 @@ function Progress({ status, data, voteCount, totalVotes }) {
   //get auth context
   const AuthState = useAuth();
   const [user, setUser] = useState("");
+  const [account, setAccount] = useState("");
 
   const { isAuthenticated, isWeb3Enabled, enableWeb3, Moralis, isInitialized } =
     useMoralis();
@@ -14,42 +15,50 @@ function Progress({ status, data, voteCount, totalVotes }) {
   const contractProcessor = useWeb3ExecuteFunction();
 
   async function delegate(choice) {
-    let options = {
-      contractAddress: "0x364ba491b1201a9c0bd326144cd6472e5ff299f1",
-      functionName: "delegate",
-      abi: [
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "delegatee",
-              type: "address",
-            },
-          ],
-          name: "delegate",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
+    if (!account.get("isDelegated")) {
+      let options = {
+        contractAddress: "0x364ba491b1201a9c0bd326144cd6472e5ff299f1",
+        functionName: "delegate",
+        abi: [
+          {
+            inputs: [
+              {
+                internalType: "address",
+                name: "delegatee",
+                type: "address",
+              },
+            ],
+            name: "delegate",
+            outputs: [],
+            stateMutability: "nonpayable",
+            type: "function",
+          },
+        ],
+        params: {
+          delegatee: user,
         },
-      ],
-      params: {
-        delegatee: user,
-      },
-      //msgValue: Moralis.Units.ETH(0.1),
-    };
+        //msgValue: Moralis.Units.ETH(0.1),
+      };
 
-    await contractProcessor.fetch({
-      params: options,
-      onSuccess: () => {
-        castVote(choice);
-      },
-      onError: (err) => {
-        // setLoading(false);
-      },
-    });
+      await contractProcessor.fetch({
+        params: options,
+        onSuccess: () => {
+          account.set("isDelegated", true);
+          account.save().then((data) => {
+            castVote(choice);
+          });
+        },
+        onError: (err) => {
+          // setLoading(false);
+        },
+      });
 
-    /*const receipt = await Moralis.executeFunction(options);
-    console.log(receipt);*/
+      /*const receipt = await Moralis.executeFunction(options);
+      console.log(receipt);*/
+    } else {
+      //proceed to vote
+      castVote(choice);
+    }
   }
 
   async function castVote(choice) {
@@ -142,6 +151,7 @@ function Progress({ status, data, voteCount, totalVotes }) {
   useEffect(() => {
     if (isInitialized) {
       let accounts = Moralis.User.current();
+      setAccount(accounts);
       let user = accounts.get("accounts")[0];
       setUser(user);
     }
