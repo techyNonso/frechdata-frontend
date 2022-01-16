@@ -25,6 +25,7 @@ export function AuthProvider({ children }) {
     isInitialized,
   } = useMoralis();
   const [userState, setUser] = useState();
+  const [currentAccount, setCurrentAccount] = useState("");
 
   //connect wallet
   const connectWallet = async () => {
@@ -56,12 +57,16 @@ export function AuthProvider({ children }) {
     if (isAuthenticated && accountsList) {
       let user = accountsList.get("accounts")[0];
       if (account && account !== user) {
-        await logout();
-        await authenticate({ provider: "injected" });
+        setCurrentAccount(account);
+        //await logout();
+        //await authenticate({ provider: "injected" });
 
-        setUser(isAuthenticated);
-        window.location.reload();
+        //setUser(isAuthenticated);
+        //window.location.reload();
       }
+    } else if (!isAuthenticated) {
+      setCurrentAccount("");
+      //window.location.replace("/");
     }
   };
 
@@ -73,7 +78,7 @@ export function AuthProvider({ children }) {
   }, [isAuthenticated, account, isInitialized]);
 
   return (
-    <AuthContext.Provider value={userState}>
+    <AuthContext.Provider value={[userState, currentAccount]}>
       <AuthUpdateContext.Provider value={[connectWallet, disConnectWallet]}>
         {children}
       </AuthUpdateContext.Provider>

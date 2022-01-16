@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router-dom";
 
 function Progress({ status, data, voteCount, totalVotes }) {
   //get auth context
-  const AuthState = useAuth();
+  const [AuthState, currentAccount] = useAuth();
   const [user, setUser] = useState("");
   const [account, setAccount] = useState("");
   const [reload, setReload] = useState(false);
@@ -106,7 +106,8 @@ function Progress({ status, data, voteCount, totalVotes }) {
 
     votes.save().then(
       (votes) => {
-        setReload(true);
+        //setReload(true);
+        window.location.reload();
       },
       (error) => {
         // Execute any logic that should take place if the save fails.
@@ -157,12 +158,18 @@ function Progress({ status, data, voteCount, totalVotes }) {
 
   useEffect(() => {
     if (isInitialized) {
-      let accounts = Moralis.User.current();
-      setAccount(accounts);
-      let user = accounts.get("accounts")[0];
-      setUser(user);
+      if (currentAccount) {
+        setUser(currentAccount);
+        let accounts = Moralis.User.current();
+        setAccount(accounts);
+      } else {
+        let accounts = Moralis.User.current();
+        setAccount(accounts);
+        let user = accounts.get("accounts")[0];
+        setUser(user);
+      }
     }
-  }, [isInitialized, reload]);
+  }, [isInitialized, reload, currentAccount]);
 
   if (status === 0) {
     return (

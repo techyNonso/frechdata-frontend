@@ -9,7 +9,7 @@ function Nav() {
   const [connectWallet, disConnectWallet] = useAuthUpdate();
 
   //get auth context
-  const AuthState = useAuth();
+  const [AuthState, currentAccount] = useAuth();
   const { isAuthenticated, isWeb3Enabled, enableWeb3, user } = useMoralis();
   const [menu, setMenu] = useState("hidden");
 

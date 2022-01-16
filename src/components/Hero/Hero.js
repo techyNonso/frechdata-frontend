@@ -7,7 +7,7 @@ function Hero() {
   //get update contexts
   const [connectWallet] = useAuthUpdate();
   //get auth context
-  const AuthState = useAuth();
+  const [AuthState, currentAccount] = useAuth();
   const { isAuthenticated, isWeb3Enabled, enableWeb3 } = useMoralis();
 
   return (

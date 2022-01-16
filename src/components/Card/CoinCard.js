@@ -3,8 +3,11 @@ import coin from "../../images/coin.png";
 import VoteState from "../VoteState";
 import Progress from "../Progress";
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
+import { useAuthUpdate, useAuth } from "../../contexts/AuthProvider";
 
 function CoinCard(props) {
+  //get auth context
+  const [AuthState, currentAccount] = useAuth();
   const [votesNumber, setVotesNumber] = useState(0);
   const [totalVotes, setTotalVotes] = useState(0);
   const {
@@ -17,8 +20,13 @@ function CoinCard(props) {
   } = useMoralis();
 
   const verify = async () => {
-    let accounts = Moralis.User.current();
-    let user = accounts.get("accounts")[0];
+    let user;
+    if (currentAccount) {
+      user = currentAccount;
+    } else {
+      let accounts = Moralis.User.current();
+      user = accounts.get("accounts")[0];
+    }
     const Votes = Moralis.Object.extend("Votes");
     const query = new Moralis.Query(Votes);
     query.equalTo("voter", user);
@@ -43,7 +51,7 @@ function CoinCard(props) {
   useEffect(() => {
     verify();
     getVotesCount();
-  }, []);
+  }, [currentAccount]);
   return (
     <div>
       <div className="bg-white h-auto p-2 py-4 rounded-xl border-2 border-coinCardBorder grid grid-cols-2 mb-4">

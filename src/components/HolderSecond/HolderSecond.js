@@ -3,8 +3,12 @@ import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
 import ProposalList from "../ProposalList/ProposalList";
 import { Link, useParams } from "react-router-dom";
 import ProposalAbout from "../ProposalList/ProposalAbout";
+import { useAuthUpdate, useAuth } from "../../contexts/AuthProvider";
 
 function HolderSecond() {
+  //get auth context
+  const [AuthState, currentAccount] = useAuth();
+
   const [user, setUser] = useState("");
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(true);
@@ -158,16 +162,20 @@ function HolderSecond() {
       if (isInitialized) {
         getGovernorProposals();
         getGorvernorName();
-        let accounts = Moralis.User.current();
-        let user = accounts.get("accounts")[0];
-        setUser(user);
+        if (currentAccount) {
+          setUser(currentAccount);
+        } else {
+          let accounts = Moralis.User.current();
+          let user = accounts.get("accounts")[0];
+          setUser(user);
+        }
       }
     }
     return () => {
       // cancel the subscription
       subscribed = false;
     };
-  }, [isInitialized]);
+  }, [isInitialized, currentAccount]);
 
   return (
     <div>

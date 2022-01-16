@@ -22,7 +22,7 @@ function HolderHero() {
   } = useMoralis();
 
   //get auth context
-  const AuthState = useAuth();
+  const [AuthState, currentAccount] = useAuth();
 
   //get update contexts
   const [connectWallet, disConnectWallet] = useAuthUpdate();

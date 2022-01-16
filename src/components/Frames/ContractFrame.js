@@ -5,7 +5,7 @@ import CreatorCard from "./CreatorCard";
 
 function ContractFrame(props) {
   //get auth context
-  const AuthState = useAuth();
+  const [AuthState, currentAccount] = useAuth();
   //get update contexts
   const [connectWallet, disConnectWallet] = useAuthUpdate();
 

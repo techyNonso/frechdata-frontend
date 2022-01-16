@@ -5,6 +5,7 @@ import ContractFrame from "../Frames/ContractFrame";
 import ProposalsFrame from "../Frames/ProposalsFrame";
 import AboutFrame from "../Frames/AboutFrame";
 import { useMoralis } from "react-moralis";
+import { useAuthUpdate, useAuth } from "../../contexts/AuthProvider";
 
 function CreatorSecond() {
   let { section } = useParams();
@@ -12,11 +13,18 @@ function CreatorSecond() {
   const [user, setUser] = useState("");
   const [contracts, setContracts] = useState([]);
   const [loading, setLoading] = useState(true);
+  //get auth context
+  const [AuthState, currentAccount] = useAuth();
 
   const getContracts = async () => {
-    let accounts = Moralis.User.current();
-    let user = accounts.get("accounts")[0];
-    setUser(user);
+    let user;
+    if (!currentAccount) {
+      let accounts = Moralis.User.current();
+      user = accounts.get("accounts")[0];
+      setUser(user);
+    } else {
+      user = currentAccount;
+    }
     const Contracts = Moralis.Object.extend("GovernanceInstanceCreations");
     const query = new Moralis.Query(Contracts);
     query.equalTo("govOwner", user);
@@ -30,6 +38,7 @@ function CreatorSecond() {
     let subscribed = true;
     if (subscribed) {
       if (isInitialized) {
+        if (currentAccount) setUser(currentAccount);
         getContracts();
       }
     }
@@ -37,7 +46,7 @@ function CreatorSecond() {
       // cancel the subscription
       subscribed = false;
     };
-  }, [isInitialized]);
+  }, [isInitialized, currentAccount]);
   return (
     <div>
       <div className="px-5 md:px-16 h-auto py-10 bg-bgGray ">

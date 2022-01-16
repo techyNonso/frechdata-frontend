@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
+import { useAuthUpdate, useAuth } from "../../contexts/AuthProvider";
 
 function ProposalModal(props) {
+  //get auth context
+  const [AuthState, currentAccount] = useAuth();
   const [loading, setLoading] = useState(false);
   const [caution, setCaution] = useState(false);
 
@@ -163,12 +166,18 @@ function ProposalModal(props) {
 
   useEffect(() => {
     if (isInitialized) {
-      let accounts = Moralis.User.current();
-      setAccount(accounts);
-      let user = accounts.get("accounts")[0];
-      setUser(user);
+      if (currentAccount) {
+        setUser(currentAccount);
+        let accounts = Moralis.User.current();
+        setAccount(accounts);
+      } else {
+        let accounts = Moralis.User.current();
+        setAccount(accounts);
+        let user = accounts.get("accounts")[0];
+        setUser(user);
+      }
     }
-  }, [isInitialized]);
+  }, [isInitialized, currentAccount]);
 
   return (
     <div>
