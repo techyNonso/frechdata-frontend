@@ -8,8 +8,8 @@ import { useAuthUpdate, useAuth } from "../../contexts/AuthProvider";
 function HolderSecond() {
   //get auth context
   const [AuthState, currentAccount] = useAuth();
-
   const [user, setUser] = useState("");
+  const [filter, setFilter] = useState("all");
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(true);
   const [proposalList, setProposals] = useState([]);
@@ -24,6 +24,22 @@ function HolderSecond() {
   const { address, section } = useParams();
 
   const contractProcessor = useWeb3ExecuteFunction();
+
+  const filterOutCome = (list) => {
+    let result = [];
+    list.forEach((item) => {
+      if (filter == "all") {
+        result = [...result, item];
+      } else if (filter == "pending" && item.data.state_ == 0) {
+        result = [...result, item];
+      } else if (filter == "active" && item.data.state_ == 1) {
+        result = [...result, item];
+      } else if (filter == "finished" && item.data.state_ > 1) {
+        result = [...result, item];
+      }
+    });
+    return result;
+  };
 
   const getProposalData = async (id, description) => {
     const ABI = [
@@ -113,6 +129,7 @@ function HolderSecond() {
   };
 
   const getGovernorProposals = async () => {
+    setLoading(true);
     const Proposals = Moralis.Object.extend("Proposals");
     const query = new Moralis.Query(Proposals);
     query.equalTo("govAddress", address);
@@ -138,9 +155,9 @@ function HolderSecond() {
         let detail = await getProposalData(proposalId, description);
         proposalData = [...proposalData, detail];
       }
-      setProposals(proposalData);
+      let outCome = filterOutCome(proposalData);
+      setProposals(outCome);
       setLoading(false);
-      //sieave(proposalList);
     } else {
       setLoading(false);
     }
@@ -175,7 +192,7 @@ function HolderSecond() {
       // cancel the subscription
       subscribed = false;
     };
-  }, [isInitialized, currentAccount]);
+  }, [isInitialized, currentAccount, filter]);
 
   return (
     <div>
@@ -206,7 +223,7 @@ function HolderSecond() {
             </div>
           </div>
           <div className="col-span-2 sm:col-span-1 mt-4 sm:mt-0">
-            <form>
+            <form className="w-full">
               <div className="relative text-gray-400 text-right  ">
                 <span className="absolute y-0 l-0 ">
                   <button
@@ -237,6 +254,36 @@ function HolderSecond() {
                 />
               </div>
             </form>
+            <div className="  relative">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-3 w-3 absolute inset-y-7 right-2  "
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+              <form className="w-full flex justify-end">
+                <select
+                  onChange={(event) => {
+                    setFilter(event.target.value);
+                  }}
+                  value={filter}
+                  className="form-select appearance-none bg-coinCardBorder mt-4   rounded-md transition  ease-in-out  w-full sm:max-w-[250px] h-[40px] cursor-pointer py-2 px-3  leading-tight text-xs focus:outline-primaryBtn  "
+                >
+                  <option value="all">All</option>
+                  <option value="active">Active</option>
+                  <option value="pending">Pending</option>
+                  <option value="finished">Finished</option>
+                </select>
+              </form>
+            </div>
           </div>
         </div>
         {section == 1 && (

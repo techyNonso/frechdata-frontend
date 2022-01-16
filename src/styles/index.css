@@ -431,6 +431,16 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-ring-shadow: 0 0 #0000;
   --tw-shadow: 0 0 #0000;
   --tw-shadow-colored: 0 0 #0000;
+  --tw-blur: var(--tw-empty,/*!*/ /*!*/);
+  --tw-brightness: var(--tw-empty,/*!*/ /*!*/);
+  --tw-contrast: var(--tw-empty,/*!*/ /*!*/);
+  --tw-grayscale: var(--tw-empty,/*!*/ /*!*/);
+  --tw-hue-rotate: var(--tw-empty,/*!*/ /*!*/);
+  --tw-invert: var(--tw-empty,/*!*/ /*!*/);
+  --tw-saturate: var(--tw-empty,/*!*/ /*!*/);
+  --tw-sepia: var(--tw-empty,/*!*/ /*!*/);
+  --tw-drop-shadow: var(--tw-empty,/*!*/ /*!*/);
+  --tw-filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
 .fixed{
@@ -452,6 +462,16 @@ Ensure the default browser behavior of the `hidden` attribute.
   left: 0px;
 }
 
+.inset-y-8{
+  top: 2rem;
+  bottom: 2rem;
+}
+
+.inset-y-7{
+  top: 1.75rem;
+  bottom: 1.75rem;
+}
+
 .top-0{
   top: 0px;
 }
@@ -466,6 +486,34 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .top-24{
   top: 6rem;
+}
+
+.top-2{
+  top: 0.5rem;
+}
+
+.right-1{
+  right: 0.25rem;
+}
+
+.top-4{
+  top: 1rem;
+}
+
+.right-2{
+  right: 0.5rem;
+}
+
+.top-6{
+  top: 1.5rem;
+}
+
+.top-8{
+  top: 2rem;
+}
+
+.top-7{
+  top: 1.75rem;
 }
 
 .z-50{
@@ -659,6 +707,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   height: 337px;
 }
 
+.h-3{
+  height: 0.75rem;
+}
+
 .max-h-\[304px\]{
   max-height: 304px;
 }
@@ -735,6 +787,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .w-\[200px\]{
   width: 200px;
+}
+
+.w-3{
+  width: 0.75rem;
 }
 
 .max-w-\[240px\]{
@@ -1046,11 +1102,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .bg-gray-100{
   --tw-bg-opacity: 1;
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
-}
-
-.bg-green-200{
-  --tw-bg-opacity: 1;
-  background-color: rgb(187 247 208 / var(--tw-bg-opacity));
 }
 
 .bg-opacity-30{
@@ -1370,6 +1421,11 @@ Ensure the default browser behavior of the `hidden` attribute.
   outline-width: 0px;
 }
 
+.filter{
+  -webkit-filter: var(--tw-filter);
+          filter: var(--tw-filter);
+}
+
 .transition{
   transition-property: color, background-color, border-color, fill, stroke, opacity, box-shadow, -webkit-text-decoration-color, -webkit-transform, -webkit-filter, -webkit-backdrop-filter;
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
@@ -1559,6 +1615,10 @@ Ensure the default browser behavior of the `hidden` attribute.
     width: 3.5rem;
   }
 
+  .sm\:max-w-\[250px\]{
+    max-width: 250px;
+  }
+
   .sm\:justify-start{
     justify-content: flex-start;
   }
@@ -1608,6 +1668,10 @@ Ensure the default browser behavior of the `hidden` attribute.
     margin-left: 0.5rem;
   }
 
+  .md\:mt-3{
+    margin-top: 0.75rem;
+  }
+
   .md\:flex{
     display: flex;
   }
@@ -1622,6 +1686,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
   .md\:justify-start{
     justify-content: flex-start;
+  }
+
+  .md\:justify-evenly{
+    justify-content: space-evenly;
   }
 
   .md\:space-x-3 > :not([hidden]) ~ :not([hidden]){
@@ -1649,6 +1717,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 @media (min-width: 1024px){
   .lg\:col-span-1{
     grid-column: span 1 / span 1;
+  }
+
+  .lg\:col-span-2{
+    grid-column: span 2 / span 2;
   }
 
   .lg\:grid-cols-3{

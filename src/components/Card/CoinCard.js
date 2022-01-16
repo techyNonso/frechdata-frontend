@@ -47,7 +47,6 @@ function CoinCard(props) {
   };
 
   const getVotesCount = async () => {
-    console.log(props.data);
     const Votes = Moralis.Object.extend("Votes");
     const query = new Moralis.Query(Votes);
     query.equalTo("proposalId", Number(props.data.proposalId_));

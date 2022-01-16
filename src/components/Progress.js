@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
-import { useAuthUpdate, useAuth,useLoader } from "../contexts/AuthProvider";
+import { useAuthUpdate, useAuth, useLoader } from "../contexts/AuthProvider";
 import { Link, useParams } from "react-router-dom";
 
 function Progress({ status, data, voteCount, totalVotes }) {
   //get auth context
   const [AuthState, currentAccount] = useAuth();
-  const [loaderState,setLoader] = useLoader()
+  const [loaderState, setLoader] = useLoader();
   const [user, setUser] = useState("");
   const [account, setAccount] = useState("");
   const [reload, setReload] = useState(false);
@@ -17,7 +17,7 @@ function Progress({ status, data, voteCount, totalVotes }) {
   const contractProcessor = useWeb3ExecuteFunction();
 
   async function delegate(choice) {
-    setLoader(true)
+    setLoader(true);
     const Delegations = Moralis.Object.extend("Delegations");
     const query = new Moralis.Query(Delegations);
     query.equalTo("delegator", user);
@@ -61,7 +61,7 @@ function Progress({ status, data, voteCount, totalVotes }) {
         },
         onError: (err) => {
           // setLoading(false);
-          setLoader(false)
+          setLoader(false);
         },
       });
 
@@ -117,14 +117,14 @@ function Progress({ status, data, voteCount, totalVotes }) {
 
     votes.save().then(
       (votes) => {
-        setLoader(false)
+        setLoader(false);
         window.location.reload();
       },
       (error) => {
         // Execute any logic that should take place if the save fails.
         // error is a Moralis.Error with an error code and message.
         alert("Failed to create new object, with error code: " + error.message);
-        setLoader(false)
+        setLoader(false);
       }
     );
   }
@@ -231,9 +231,13 @@ function Progress({ status, data, voteCount, totalVotes }) {
           ></div>
         </div>{" "}
         <div className="w-full grid grid-cols-2 mt-3">
-          <div className="col-span-2  lg:col-span-1 ">
+          <div
+            className={`col-span-2 ${
+              AuthState && voteCount != 0 ? "hidden" : "lg:col-span-1"
+            } `}
+          >
             {AuthState && voteCount === 0 && (
-              <div className="flex justify-between md:justify-start">
+              <div className="flex justify-between md:justify-evenly md:mt-3">
                 <button
                   onClick={() => delegate(false)}
                   className="w-12 bg-secondaryBtn text-white text-xs py-2 px-2 rounded-xl cursor-pointer"
@@ -260,7 +264,11 @@ function Progress({ status, data, voteCount, totalVotes }) {
             )}
           </div>
 
-          <div className="pt-1 col-span-2 lg:col-span-1">
+          <div
+            className={`pt-1 col-span-2 ${
+              AuthState && voteCount != 0 ? "lg:col-span-2" : "lg:col-span-1"
+            } `}
+          >
             <span className="font-semibold text-xs pl-2">Approval Rating:</span>
             <span className="text-xs pl-1">
               ({yesPerc(forYes(), forNo())}%)
@@ -302,13 +310,13 @@ function Progress({ status, data, voteCount, totalVotes }) {
             style={{ width: `${getSizeNo()}` }}
           ></div>
         </div>{" "}
-        <div className="w-full grid grid-cols-2 mt-3">
-          <div className="pt-1 col-span-2 lg:col-span-1">
+        <div className="w-full grid grid-cols-2 mt-3 ">
+          <div className="pt-1 col-span-2 ">
             <span className="font-semibold text-xs pl-2">Approval Rating:</span>
             <span className="text-xs pl-1">
               ({yesPerc(forYes(), forNo())}%)
             </span>
-            <span className="font-semibold text-xs pl-2">Quorom:</span>
+            <span className="font-semibold text-xs pl-2 ">Quorom:</span>
             <span className="text-xs pl-1">({verdict(forYes(), forNo())})</span>
           </div>
         </div>

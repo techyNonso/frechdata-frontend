@@ -10,11 +10,27 @@ function ProposalsFrame(props) {
   const [user, setUser] = useState("");
   const [address, setAddress] = useState("");
   const [name, setName] = useState("");
-  //const [address, setAddress] = useState("");
+  const [filter, setFilter] = useState("all");
   const [contracts, setContracts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [proposalList, setProposals] = useState([]);
   const [AuthState, currentAccount] = useAuth();
+
+  const filterOutCome = (list) => {
+    let result = [];
+    list.forEach((item) => {
+      if (filter == "all") {
+        result = [...result, item];
+      } else if (filter == "pending" && item.data.state_ == 0) {
+        result = [...result, item];
+      } else if (filter == "active" && item.data.state_ == 1) {
+        result = [...result, item];
+      } else if (filter == "finished" && item.data.state_ > 1) {
+        result = [...result, item];
+      }
+    });
+    return result;
+  };
 
   const getProposalData = async (id, description, address) => {
     const ABI = [
@@ -131,9 +147,9 @@ function ProposalsFrame(props) {
         let detail = await getProposalData(proposalId, description, address);
         proposalData = [...proposalData, detail];
       }
-      setProposals(proposalData);
+      let outCome = filterOutCome(proposalData);
+      setProposals(outCome);
       setLoading(false);
-      //sieave(proposalList);
     } else {
       setLoading(false);
     }
@@ -143,7 +159,7 @@ function ProposalsFrame(props) {
     if (isInitialized && props.contracts.length > 0) {
       getGovernorProposals();
     }
-  }, [isInitialized, props.contracts]);
+  }, [isInitialized, props.contracts, filter]);
 
   return (
     <div>
@@ -187,14 +203,36 @@ function ProposalsFrame(props) {
               </form>
             </div>
             <div className="col-span-4 sm:col-span-1">
-              <form>
-                <select className="form-select appearance-none bg-coinCardBorder   rounded-md transition  ease-in-out  w-full h-[40px] cursor-pointer py-2 px-3  leading-tight text-xs focus:outline-primaryBtn  ">
-                  <option value="1">All</option>
-                  <option value="2">Active</option>
-                  <option value="3">Pending</option>
-                  <option value="4">Finished</option>
-                </select>
-              </form>
+              <div className="relative">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-3 w-3 absolute top-4 right-2  "
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+                <form>
+                  <select
+                    onChange={(event) => {
+                      setFilter(event.target.value);
+                    }}
+                    value={filter}
+                    className="form-select appearance-none bg-coinCardBorder   rounded-md transition  ease-in-out  w-full h-[40px] cursor-pointer py-2 px-3  leading-tight text-xs focus:outline-primaryBtn  "
+                  >
+                    <option value="all">All</option>
+                    <option value="active">Active</option>
+                    <option value="pending">Pending</option>
+                    <option value="finished">Finished</option>
+                  </select>
+                </form>
+              </div>
             </div>
           </div>
         </div>
