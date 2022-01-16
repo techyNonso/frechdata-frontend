@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
-import { useAuthUpdate, useAuth } from "../contexts/AuthProvider";
+import { useAuthUpdate, useAuth,useLoader } from "../contexts/AuthProvider";
 import { Link, useParams } from "react-router-dom";
 
 function Progress({ status, data, voteCount, totalVotes }) {
   //get auth context
   const [AuthState, currentAccount] = useAuth();
+  const [loaderState,setLoader] = useLoader()
   const [user, setUser] = useState("");
   const [account, setAccount] = useState("");
   const [reload, setReload] = useState(false);
@@ -16,6 +17,7 @@ function Progress({ status, data, voteCount, totalVotes }) {
   const contractProcessor = useWeb3ExecuteFunction();
 
   async function delegate(choice) {
+    setLoader(true)
     const Delegations = Moralis.Object.extend("Delegations");
     const query = new Moralis.Query(Delegations);
     query.equalTo("delegator", user);
@@ -59,6 +61,7 @@ function Progress({ status, data, voteCount, totalVotes }) {
         },
         onError: (err) => {
           // setLoading(false);
+          setLoader(false)
         },
       });
 
@@ -114,13 +117,14 @@ function Progress({ status, data, voteCount, totalVotes }) {
 
     votes.save().then(
       (votes) => {
-        //setReload(true);
+        setLoader(false)
         window.location.reload();
       },
       (error) => {
         // Execute any logic that should take place if the save fails.
         // error is a Moralis.Error with an error code and message.
         alert("Failed to create new object, with error code: " + error.message);
+        setLoader(false)
       }
     );
   }

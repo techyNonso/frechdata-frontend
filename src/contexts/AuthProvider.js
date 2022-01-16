@@ -1,9 +1,11 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useMoralis } from "react-moralis";
 import { connectors } from "./config";
+import Swal from 'sweetalert2'
 
 const AuthContext = React.createContext();
 const AuthUpdateContext = React.createContext();
+const LoaderContext = React.createContext();
 
 //auth hook
 export function useAuth() {
@@ -15,6 +17,10 @@ export function useAuthUpdate() {
   return useContext(AuthUpdateContext);
 }
 
+export function useLoader(){
+  return useContext(LoaderContext)
+}
+
 export function AuthProvider({ children }) {
   const {
     isAuthenticated,
@@ -23,8 +29,10 @@ export function AuthProvider({ children }) {
     logout,
     account,
     isInitialized,
+    authError
   } = useMoralis();
   const [userState, setUser] = useState();
+  const [loaderState, setLoader] = useState(false);
   const [currentAccount, setCurrentAccount] = useState("");
 
   //connect wallet
@@ -40,6 +48,7 @@ export function AuthProvider({ children }) {
         "pillar",
       ],
     });*/
+    setLoader(true)
     await authenticate({ provider: "injected" });
 
     //set auth state from moralis
@@ -71,16 +80,31 @@ export function AuthProvider({ children }) {
   };
 
   useEffect(() => {
+    if(authError){
+      setLoader(false)
+        Swal.fire({
+      title: 'Error!',
+      text: 'An error occured during authentication',
+      icon: 'error',
+      confirmButtonText: 'Ok',
+      confirmButtonColor: '#2C6CF4',
+      })
+    }else{
+      setLoader(false)
+    }
     setUser(isAuthenticated);
     if (isInitialized) {
       evaluateAccounts(account);
+      
     }
-  }, [isAuthenticated, account, isInitialized]);
+  }, [isAuthenticated, account, isInitialized,authError]);
 
   return (
     <AuthContext.Provider value={[userState, currentAccount]}>
       <AuthUpdateContext.Provider value={[connectWallet, disConnectWallet]}>
-        {children}
+        <LoaderContext.Provider value={[loaderState,setLoader]}>
+          {children}
+        </LoaderContext.Provider>
       </AuthUpdateContext.Provider>
     </AuthContext.Provider>
   );

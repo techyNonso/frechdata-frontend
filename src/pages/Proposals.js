@@ -6,6 +6,9 @@ import HomeBase from "../components/HomeBase/HomeBase";
 import { AuthProvider } from "../contexts/AuthProvider";
 import HolderHero from "../components/Hero/HolderHero";
 import HolderSecond from "../components/HolderSecond/HolderSecond";
+import MyLoader from "../components/Modal/MyLoader";
+
+
 function Proposals() {
   return (
     <div className="font-headFont ">
@@ -13,6 +16,7 @@ function Proposals() {
         <Header bg={"bg-bgGray"} />
         <HolderHero />
         <HolderSecond />
+        <MyLoader />
       </AuthProvider>
     </div>
   );
