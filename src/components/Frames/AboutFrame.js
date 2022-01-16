@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
+import { useAuthUpdate, useAuth } from "../../contexts/AuthProvider";
 
 function AboutFrame(props) {
   const [about, setAbout] = useState("");
@@ -7,6 +8,7 @@ function AboutFrame(props) {
   const [address, setAddress] = useState("");
   const [loading, setLoading] = useState(true);
   const [reload, setReload] = useState(false);
+  const [AuthState, currentAccount] = useAuth();
 
   const { isAuthenticated, isWeb3Enabled, enableWeb3, Moralis, isInitialized } =
     useMoralis();
@@ -68,15 +70,20 @@ function AboutFrame(props) {
       )}
 
       <div className="mt-8">
+        {!AuthState && (
+          <div className="font-semibold text-lg text-gray-600">
+            Please connect a wallet
+          </div>
+        )}
         <div>
-          {oldAbout && !loading && (
+          {oldAbout && !loading && AuthState && (
             <p className="text-lg text-justify leading-relaxed">{oldAbout}</p>
           )}
         </div>
 
         <div className="w-full max-w-[600px] ">
           <form>
-            {!oldAbout && !loading && (
+            {!oldAbout && !loading && AuthState && (
               <div>
                 <textarea
                   onChange={handleAboutIns}

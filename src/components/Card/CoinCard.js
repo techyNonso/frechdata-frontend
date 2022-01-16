@@ -4,6 +4,7 @@ import VoteState from "../VoteState";
 import Progress from "../Progress";
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
 import { useAuthUpdate, useAuth } from "../../contexts/AuthProvider";
+import { generatePath } from "react-router-dom";
 
 function CoinCard(props) {
   //get auth context
@@ -19,22 +20,30 @@ function CoinCard(props) {
     isWeb3EnableLoading,
   } = useMoralis();
 
-  const verify = async () => {
-    let user;
-    if (currentAccount) {
-      user = currentAccount;
-    } else {
-      let accounts = Moralis.User.current();
-      user = accounts.get("accounts")[0];
-    }
+  const generatePath = async (user) => {
     const Votes = Moralis.Object.extend("Votes");
     const query = new Moralis.Query(Votes);
     query.equalTo("voter", user);
     query.equalTo("proposalId", Number(props.data.proposalId_));
+    query.equalTo("govAddress", props.address);
     const results = await query.find();
     let voteNumber = results.length;
 
     setVotesNumber(voteNumber);
+  };
+
+  const verify = async () => {
+    let user;
+    if (currentAccount) {
+      user = currentAccount;
+      generatePath(user);
+    } else if (!currentAccount && isAuthenticated) {
+      let accounts = Moralis.User.current();
+      user = accounts.get("accounts")[0];
+      generatePath(user);
+    } else {
+      setVotesNumber(1);
+    }
   };
 
   const getVotesCount = async () => {

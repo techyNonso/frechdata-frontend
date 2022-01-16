@@ -16,7 +16,12 @@ function Progress({ status, data, voteCount, totalVotes }) {
   const contractProcessor = useWeb3ExecuteFunction();
 
   async function delegate(choice) {
-    if (!account.get("isDelegated")) {
+    const Delegations = Moralis.Object.extend("Delegations");
+    const query = new Moralis.Query(Delegations);
+    query.equalTo("delegator", user);
+    const results = await query.find();
+
+    if (results.length == 0) {
       let options = {
         contractAddress: "0x364ba491b1201a9c0bd326144cd6472e5ff299f1",
         functionName: "delegate",
@@ -44,8 +49,11 @@ function Progress({ status, data, voteCount, totalVotes }) {
       await contractProcessor.fetch({
         params: options,
         onSuccess: () => {
-          account.set("isDelegated", true);
-          account.save().then((data) => {
+          const NewDelegate = Moralis.Object.extend("Delegations");
+          const newDelegate = new NewDelegate();
+          newDelegate.set("isDelegated", true);
+          newDelegate.set("delegator", user);
+          newDelegate.save().then((data) => {
             castVote(choice);
           });
         },
@@ -127,24 +135,22 @@ function Progress({ status, data, voteCount, totalVotes }) {
   };
 
   const yesPerc = (yes, no) => {
-    yes = isNaN(yes) || Number(yes) || 0;
-    no = isNaN(no) || Number(no) || 0;
-    const result = (yes / (yes + no)) * 100;
+    let total = Number(yes) + Number(no);
+    let result = (Number(yes) / total) * 100;
+    result = isNaN(result) && !Number(result) ? 0 : Number(result);
     return result.toFixed();
   };
   const noPerc = (yes, no) => {
-    yes = isNaN(yes) || Number(yes) || 0;
-    no = isNaN(no) || Number(no) || 0;
-    const result = (no / (yes + no)) * 100;
+    let total = Number(yes) + Number(no);
+    let result = (Number(no) / total) * 100;
+    result = isNaN(result) && !Number(result) ? 0 : Number(result);
     return result.toFixed();
   };
 
   const verdict = (yes, no) => {
-    yes = isNaN(yes) || Number(yes) || 0;
-    no = isNaN(no) || Number(no) || 0;
-    if (yes > no) return "Yes";
-    if (yes < no) return "No";
-    if (yes === no) return "Draw";
+    if (Number(yes) > Number(no)) return "Yes";
+    if (Number(yes) < Number(no)) return "No";
+    if (Number(yes) === Number(no)) return "Draw";
   };
 
   const getSizeYes = () => {
@@ -162,7 +168,7 @@ function Progress({ status, data, voteCount, totalVotes }) {
         setUser(currentAccount);
         let accounts = Moralis.User.current();
         setAccount(accounts);
-      } else {
+      } else if (isAuthenticated) {
         let accounts = Moralis.User.current();
         setAccount(accounts);
         let user = accounts.get("accounts")[0];
@@ -261,17 +267,21 @@ function Progress({ status, data, voteCount, totalVotes }) {
         </div>
       </div>
     );
-  } else if (status === 2) {
+  } else if (status > 1) {
     return (
       <div className="w-full">
         <div className="grid grid-cols-4 w-full ">
           <div className="col-span-3 flex">
             <div className="bg-yesPoint h-2 w-2 rounded-full mt-1"></div>
             <div className="text-xs font-bold ml-2">Yes:</div>
-            <p className="text-xs ml-2">4900 (70%)</p>
+            <p className="text-xs ml-2">
+              {forYes()} ({yesPerc(forYes(), forNo())}%)
+            </p>
             <div className="bg-noPoint h-2 w-2 rounded-full mt-1 ml-2"></div>
             <div className="text-xs font-bold ml-2">No:</div>
-            <p className="text-xs ml-2">2100 (30%)</p>
+            <p className="text-xs ml-2">
+              {forNo()} ({noPerc(forYes(), forNo())}%)
+            </p>
           </div>
 
           <div className="col-span-1  text-right text-xs ">
@@ -281,11 +291,11 @@ function Progress({ status, data, voteCount, totalVotes }) {
         <div className="w-full h-2 bg-gray-300 rounded-full relative mt-4 sm:mt-0">
           <div
             className="rounded-l h-full bg-yesPoint inline-block absolute top-0 left-0"
-            style={{ width: "70%" }}
+            style={{ width: `${getSizeYes()}` }}
           ></div>
           <div
             className="rounded-r h-full bg-noPoint inline-block absolute top-0 right-0"
-            style={{ width: "30%" }}
+            style={{ width: `${getSizeNo()}` }}
           ></div>
         </div>{" "}
         <div className="w-full grid grid-cols-2 mt-3">

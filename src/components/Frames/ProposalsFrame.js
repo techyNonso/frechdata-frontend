@@ -3,6 +3,7 @@ import { Link, useLinkClickHandler, useParams } from "react-router-dom";
 import CoinCard from "../Card/CoinCard";
 import { useMoralis } from "react-moralis";
 import ProposalList from "../ProposalList/ProposalList";
+import { useAuthUpdate, useAuth } from "../../contexts/AuthProvider";
 
 function ProposalsFrame(props) {
   const { Moralis, isInitialized } = useMoralis();
@@ -13,6 +14,7 @@ function ProposalsFrame(props) {
   const [contracts, setContracts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [proposalList, setProposals] = useState([]);
+  const [AuthState, currentAccount] = useAuth();
 
   const getProposalData = async (id, description, address) => {
     const ABI = [
@@ -197,19 +199,24 @@ function ProposalsFrame(props) {
           </div>
         </div>
         <div>
-          {loading && (
+          {!AuthState && (
+            <div className="font-semibold text-lg text-gray-600">
+              Please connect a wallet
+            </div>
+          )}
+          {loading && AuthState && (
             <div className="font-semibold text-lg text-gray-600">
               Loading Proposals
             </div>
           )}
-          {proposalList.length > 0 && !loading && (
+          {proposalList.length > 0 && !loading && AuthState && (
             <ProposalList
               proposals={proposalList}
               govName={name}
               address={address}
             />
           )}
-          {proposalList.length === 0 && !loading && (
+          {proposalList.length === 0 && !loading && AuthState && (
             <div className="font-semibold text-lg text-gray-600">
               No Proposals Found
             </div>

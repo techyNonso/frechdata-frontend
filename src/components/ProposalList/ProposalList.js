@@ -22,9 +22,11 @@ function ProposalList(props) {
     if (subscribed) {
       if (isInitialized) {
         //getProposalCount();
-        let accounts = Moralis.User.current();
-        let user = accounts.get("accounts")[0];
-        setUser(user);
+        if (isAuthenticated) {
+          let accounts = Moralis.User.current();
+          let user = accounts.get("accounts")[0];
+          setUser(user);
+        }
       }
     }
 

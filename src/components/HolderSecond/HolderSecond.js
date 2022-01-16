@@ -164,7 +164,7 @@ function HolderSecond() {
         getGorvernorName();
         if (currentAccount) {
           setUser(currentAccount);
-        } else {
+        } else if (isAuthenticated) {
           let accounts = Moralis.User.current();
           let user = accounts.get("accounts")[0];
           setUser(user);

@@ -9,7 +9,7 @@ import { useAuthUpdate, useAuth } from "../../contexts/AuthProvider";
 
 function CreatorSecond() {
   let { section } = useParams();
-  const { Moralis, isInitialized } = useMoralis();
+  const { Moralis, isInitialized, isAuthenticated } = useMoralis();
   const [user, setUser] = useState("");
   const [contracts, setContracts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,7 +18,7 @@ function CreatorSecond() {
 
   const getContracts = async () => {
     let user;
-    if (!currentAccount) {
+    if (!currentAccount && isAuthenticated) {
       let accounts = Moralis.User.current();
       user = accounts.get("accounts")[0];
       setUser(user);
@@ -46,7 +46,7 @@ function CreatorSecond() {
       // cancel the subscription
       subscribed = false;
     };
-  }, [isInitialized, currentAccount]);
+  }, [isInitialized, currentAccount, isAuthenticated]);
   return (
     <div>
       <div className="px-5 md:px-16 h-auto py-10 bg-bgGray ">

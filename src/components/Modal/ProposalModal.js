@@ -22,7 +22,12 @@ function ProposalModal(props) {
   };
 
   async function delegate() {
-    if (!account.get("isDelegated")) {
+    const Delegations = Moralis.Object.extend("Delegations");
+    const query = new Moralis.Query(Delegations);
+    query.equalTo("delegator", user);
+    const results = await query.find();
+
+    if (results.length == 0) {
       let options = {
         contractAddress: "0x364ba491b1201a9c0bd326144cd6472e5ff299f1",
         functionName: "delegate",
@@ -50,8 +55,12 @@ function ProposalModal(props) {
       await contractProcessor.fetch({
         params: options,
         onSuccess: () => {
-          account.set("isDelegated", true);
-          account.save().then((data) => {
+          const NewDelegate = Moralis.Object.extend("Delegations");
+          const newDelegate = new NewDelegate();
+
+          newDelegate.set("isDelegated", true);
+          newDelegate.set("delegator", user);
+          newDelegate.save().then((data) => {
             makeProposal();
           });
         },
