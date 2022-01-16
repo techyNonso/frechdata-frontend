@@ -11,7 +11,7 @@ import MyLoader from "../components/Modal/MyLoader";
 
 function Proposals() {
   return (
-    <div className="font-headFont ">
+    <div className="font-headFont relative ">
       <AuthProvider>
         <Header bg={"bg-bgGray"} />
         <HolderHero />

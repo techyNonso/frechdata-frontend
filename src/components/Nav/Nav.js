@@ -16,7 +16,7 @@ function Nav() {
   return (
     <div>
       <div className="grid grid-cols-4 pt-6 relative">
-        <div className="col-span-3 md:col-span-1  flex ">
+        <Link to="/" className="col-span-3 md:col-span-1  flex ">
           <img
             className="w-[40px] h-[40px] rounded-full mr-2 mt-2 "
             src={logo}
@@ -25,7 +25,7 @@ function Nav() {
             {" "}
             Logo
           </span>
-        </div>
+        </Link>
         <div className="hidden md:flex col-span-2 x justify-evenly font-headFont font-medium leading-loose  pt-3">
           <div className="hover:border-b-2 border-primaryBtn pb-1  cursor-pointer">
             <Link to="/">Home</Link>
