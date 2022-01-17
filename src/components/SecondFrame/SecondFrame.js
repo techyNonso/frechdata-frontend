@@ -1,6 +1,7 @@
 import React from "react";
 import holder from "../../images/holder.png";
 import creatorImage from "../../images/creatorImage.png";
+import { Link } from "react-router-dom";
 
 function SecondFrame() {
   return (
@@ -8,14 +9,13 @@ function SecondFrame() {
       <div className="h-auto px-5 md:px-16 py-6 md:py-16">
         <div>
           <h3 className=" font-bold text-2xl mt-2 leading-normal text-center">
-            Freshcoast.com
+            <Link to="/">Freshcoastblockchain.com</Link>
           </h3>
 
           <p className="mt-6 font-normal text-xl text-center mb-6">
-            We at proposals.com are working hard at building the best proposal
-            platform for all interested. We have sahred the works to be done in
-            two phases.Currently we’re still working oat phase one. Phase two is
-            upcoming. Thank you.
+            Fresh coast blockchain is disrupting blockchain governance. we
+            provide real-time creation of audited, certified, tested, and
+            ungradable governance contracts.
           </p>
         </div>
         <div className="grid grid-cols-2 justify-center gap-6 ">
@@ -43,45 +43,49 @@ function SecondFrame() {
       </div>
       <div className="h-auto bg-bgGray grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-5 md:px-16 py-6 md:py-16">
         <div>
-          <h3 className=" font-bold text-2xl mt-20">
-            Choose a category that’s best for you
+          <h3 className=" font-bold text-center md:text-left text-3xl mt-20 mb-6">
+            Create a proposal or vote
           </h3>
 
-          <p className="mt-6 font-normal text-xl">
+          {/*<p className="mt-6 font-normal text-xl">
             Create proposals and vote on several proposals using our governance
             coin or your own wallet coin.
-          </p>
+          </p>*/}
         </div>
         <div
-          className="h-[337px] bg-no-repeat border-2 bg-right-bottom"
+          className="h-[337px] bg-no-repeat border-2 bg-right-bottom  relative"
           style={{ backgroundImage: `url(${creatorImage})` }}
         >
-          <div className="w-full h-full  bg-bgBlue opacity-50 pt-16">
-            <div className="z-50">
-              <h4 className="text-center text-2xl font-bold leading-normal mb-6 ">
-                Coin Creator
-              </h4>
-              <p className="font-normal text-justify px-6 text-xl ">
-                Partner with us as a coin holder and vote using your coin or our
-                governance coin.
-              </p>
-            </div>
+          <span
+            className="block absolute -inset-1 bg-bgBlue opacity-30"
+            aria-hidden="true"
+          ></span>
+
+          <div className="w-full h-full pt-16 relative ">
+            <h4 className="text-center text-2xl font-bold leading-normal mb-6 ">
+              Workbench
+            </h4>
+            <p className="font-normal text-justify px-6 text-xl ">
+              Use the workbench to create audited, certified and tested
+              governance contracts realtime.
+            </p>
           </div>
         </div>
         <div
-          className="h-[337px]  bg-no-repeat border-2 bg-right-bottom"
+          className="h-[337px]  bg-no-repeat border-2 bg-right-bottom relative"
           style={{ backgroundImage: `url(${holder})` }}
         >
-          <div className="w-full h-full  bg-bgBlue opacity-50 pt-16">
-            <div className="z-50">
-              <h4 className="text-center text-2xl font-bold leading-normal  mb-6">
-                Coin Holder
-              </h4>
-              <p className="font-normal text-justify px-6 text-xl">
-                Partner with us as a coin holder and vote using your coin or our
-                governance coin.
-              </p>
-            </div>
+          <span
+            className="block absolute -inset-1 bg-bgBlue opacity-30"
+            aria-hidden="true"
+          ></span>
+          <div className="w-full h-full pt-16 relative">
+            <h4 className="text-center text-2xl font-bold leading-normal  mb-6">
+              Voter
+            </h4>
+            <p className="font-normal text-justify px-6 text-xl">
+              Connect your wallet to see proposals waiting for your vote.
+            </p>
           </div>
         </div>
       </div>

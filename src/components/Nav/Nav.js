@@ -16,25 +16,24 @@ function Nav() {
   return (
     <div>
       <div className="grid grid-cols-4 pt-6 relative">
-        <Link to="/" className="col-span-3 md:col-span-1  flex ">
+        <Link to="/" className="col-span-3  md:col-span-1   flex ">
           <img
-            className="w-[40px] h-[40px] rounded-full mr-2 mt-2 "
+            className="w-[30px] h-[30px] lg:w-[40px] lg:h-[40px] rounded-full  mt-3 lg:mt-2 "
             src={logo}
           />
           <span className="font-headFont font-bold leading-loose pt-3">
-            {" "}
-            Logo
+            Fresh Coast Blockchain
           </span>
         </Link>
-        <div className="hidden md:flex col-span-2 x justify-evenly font-headFont font-medium leading-loose  pt-3">
+        <div className="hidden md:flex col-span-2  justify-evenly font-headFont font-medium leading-loose  pt-3">
           <div className="hover:border-b-2 border-primaryBtn pb-1  cursor-pointer">
             <Link to="/">Home</Link>
           </div>
           <div className="hover:border-b-2 border-primaryBtn pb-1  cursor-pointer">
-            <Link to="/creator/1">creator</Link>
+            <Link to="/creator/1">workbench</Link>
           </div>
           <div className="hover:border-b-2 border-primaryBtn pb-1  cursor-pointer">
-            <Link to="/holder">Holder</Link>
+            <Link to="/holder">voter</Link>
           </div>
           <div className="hover:border-b-2 border-primaryBtn pb-1  cursor-pointer">
             <Link to="/admin">Learn</Link>
@@ -43,11 +42,11 @@ function Nav() {
             <Link to="/admin">About</Link>
           </div>
         </div>
-        <div className="hidden md:flex col-span-1  justify-end">
+        <div className="hidden  col-span-1  md:flex justify-end">
           {!AuthState && (
             <button
               onClick={connectWallet}
-              className="bg-primaryBtn w-fit text-white  font-headFont font-medium leading-loose cursor-pointer rounded-2xl p-2 px-2 tracking-wider"
+              className="bg-primaryBtn h-full max-h-[50px]  text-white  font-headFont font-medium leading-loose cursor-pointer rounded-2xl  px-2 tracking-wider"
             >
               Connect Wallet
             </button>
@@ -93,10 +92,10 @@ function Nav() {
             <div className="w-full py-2 hover:bg-bgGray pl-2">Home</div>
           </Link>
           <Link to="/creator/1">
-            <div className="w-full py-2 hover:bg-bgGray pl-2">Creator</div>
+            <div className="w-full py-2 hover:bg-bgGray pl-2">workbench</div>
           </Link>
           <Link to="/holder">
-            <div className="w-full py-2 hover:bg-bgGray pl-2">Holder</div>
+            <div className="w-full py-2 hover:bg-bgGray pl-2">voter</div>
           </Link>
           <Link to="/learn">
             <div className="w-full py-2 hover:bg-bgGray pl-2">Learn</div>

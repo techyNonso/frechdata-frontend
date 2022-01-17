@@ -87,7 +87,7 @@ function HolderHero() {
                   ></path>
                 </svg>
                 <span className="ml-1 text-sm font-medium text-gray-400 md:ml-2 ">
-                  Coin Holder
+                  Voter
                 </span>
               </div>
             </li>

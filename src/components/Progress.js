@@ -237,7 +237,7 @@ function Progress({ status, data, voteCount, totalVotes }) {
             } `}
           >
             {AuthState && voteCount === 0 && (
-              <div className="flex justify-between md:justify-evenly md:mt-3">
+              <div className="flex justify-between md:justify-start md:space-x-10 md:mt-3">
                 <button
                   onClick={() => delegate(false)}
                   className="w-12 bg-secondaryBtn text-white text-xs py-2 px-2 rounded-xl cursor-pointer"
