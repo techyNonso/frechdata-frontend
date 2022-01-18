@@ -13,9 +13,9 @@ function SecondFrame() {
           </h3>
 
           <p className="mt-6 font-normal text-xl text-center mb-6">
-            Fresh coast blockchain is disrupting blockchain governance. we
+            Fresh coast blockchain is disrupting blockchain governance. We
             provide real-time creation of audited, certified, tested, and
-            ungradable governance contracts.
+            upgradable governance contracts.
           </p>
         </div>
         <div className="grid grid-cols-2 justify-center gap-6 ">
@@ -44,7 +44,7 @@ function SecondFrame() {
       <div className="h-auto bg-bgGray grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-5 md:px-16 py-6 md:py-16">
         <div>
           <h3 className=" font-bold text-center md:text-left text-3xl mt-20 mb-6">
-            Create a proposal or vote
+            Create a contract, make a proposal or vote
           </h3>
 
           {/*<p className="mt-6 font-normal text-xl">

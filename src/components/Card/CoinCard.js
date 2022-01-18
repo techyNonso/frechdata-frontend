@@ -5,12 +5,15 @@ import Progress from "../Progress";
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
 import { useAuthUpdate, useAuth } from "../../contexts/AuthProvider";
 import { generatePath } from "react-router-dom";
+import img from "../../images/img.png";
 
 function CoinCard(props) {
   //get auth context
   const [AuthState, currentAccount] = useAuth();
   const [votesNumber, setVotesNumber] = useState(0);
   const [totalVotes, setTotalVotes] = useState(0);
+  const [image, setImage] = useState("");
+
   const {
     isAuthenticated,
     isWeb3Enabled,
@@ -56,9 +59,23 @@ function CoinCard(props) {
     setTotalVotes(voteNumber);
   };
 
+  const getInfo = async () => {
+    const GovernorImages = Moralis.Object.extend("GovernorImages");
+    const governorImages = new GovernorImages();
+    const query = new Moralis.Query(governorImages);
+    query.equalTo("govInfo", props.address);
+    const results = await query.find();
+    if (results.length == 0) {
+      setImage(false);
+    } else {
+      setImage(results[0].get("image"));
+    }
+  };
+
   useEffect(() => {
     verify();
     getVotesCount();
+    getInfo();
   }, [currentAccount]);
   return (
     <div>
@@ -69,9 +86,9 @@ function CoinCard(props) {
               <div className="flex">
                 <div className="w-6 h-6 rounded-full">
                   <img
-                    src={coin}
+                    className="aspect-square mt-1 sm:mt-0 rounded-full"
                     alt="coin"
-                    className="aspect-square mt-1 sm:mt-0"
+                    src={!image ? img : `https://ipfs.infura.io/ipfs/${image}`}
                   />
                 </div>
                 <h3 className="font-medium text-sm pt-1 pl-2 ">{props.name}</h3>

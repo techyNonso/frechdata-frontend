@@ -4,6 +4,7 @@ import { useMoralis } from "react-moralis";
 import { useAuthUpdate, useAuth } from "../../contexts/AuthProvider";
 import ProposalModal from "../Modal/ProposalModal";
 import { Link, useParams } from "react-router-dom";
+import img from "../../images/img.png";
 
 function HolderHero() {
   const [modalVissible, setModal] = useState(false);
@@ -12,6 +13,7 @@ function HolderHero() {
   const [proposalsNumber, setProposalsNumber] = useState(0);
   const [caution, setCaution] = useState(false);
   const { address } = useParams();
+  const [image, setImage] = useState("");
   const {
     isAuthenticated,
     isWeb3Enabled,
@@ -52,11 +54,26 @@ function HolderHero() {
     setProposalsNumber(proposalsNumber);
   };
 
+  const getInfo = async () => {
+    const GovernorImages = Moralis.Object.extend("GovernorImages");
+    const governorImages = new GovernorImages();
+    const query = new Moralis.Query(governorImages);
+    query.equalTo("govInfo", address);
+
+    const results = await query.find();
+    if (results.length == 0) {
+      setImage(false);
+    } else {
+      setImage(results[0].get("image"));
+    }
+  };
+
   useEffect(() => {
     if (isInitialized) {
       getGorvernorName();
       getVotes();
       getProposals();
+      getInfo();
     }
   }, [isInitialized]);
 
@@ -116,7 +133,11 @@ function HolderHero() {
       <div className="pt-6 bg-bgGray h-auto px-5 md:px-16 pb-10 ">
         <div className="block sm:flex">
           <div className="rounded-full m-auto h-20 w-20 mb-4 sm:h-14 sm:w-14 sm:m-0 ">
-            <img src={coin} className="w-full h-full" alt="coin" />
+            <img
+              className="h-full w-full rounded-full "
+              alt="coin"
+              src={!image ? img : `https://ipfs.infura.io/ipfs/${image}`}
+            />
           </div>
           <h2 className="font-medium leading-loose text-3xl pl-4 text-center sm:text-left">
             {name}

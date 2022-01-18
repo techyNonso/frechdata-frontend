@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
 import { useAuthUpdate, useAuth, useLoader } from "../contexts/AuthProvider";
 import { Link, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function Progress({ status, data, voteCount, totalVotes }) {
   //get auth context
@@ -60,6 +61,13 @@ function Progress({ status, data, voteCount, totalVotes }) {
           });
         },
         onError: (err) => {
+          Swal.fire({
+            title: "Error!",
+            text: "An error occured during transaction",
+            icon: "error",
+            confirmButtonText: "Ok",
+            confirmButtonColor: "#2C6CF4",
+          });
           // setLoading(false);
           setLoader(false);
         },
@@ -73,6 +81,28 @@ function Progress({ status, data, voteCount, totalVotes }) {
     }
   }
 
+  const recordVote = (choice) => {
+    const Votes = Moralis.Object.extend("Votes");
+    const votes = new Votes();
+
+    votes.set("proposalId", Number(data.proposalId_));
+    votes.set("vote", choice);
+    votes.set("voter", user);
+    votes.set("govAddress", address);
+
+    votes.save().then(
+      (votes) => {
+        setLoader(false);
+        window.location.reload();
+      },
+      (error) => {
+        // Execute any logic that should take place if the save fails.
+        // error is a Moralis.Error with an error code and message.
+        alert("Failed to create new object, with error code: " + error.message);
+        setLoader(false);
+      }
+    );
+  };
   async function castVote(choice) {
     let options = {
       contractAddress: address,
@@ -105,28 +135,24 @@ function Progress({ status, data, voteCount, totalVotes }) {
     };
     await Moralis.enableWeb3();
 
-    const voteDetails = await Moralis.executeFunction(options);
-
-    const Votes = Moralis.Object.extend("Votes");
-    const votes = new Votes();
-
-    votes.set("proposalId", Number(data.proposalId_));
-    votes.set("vote", choice);
-    votes.set("voter", user);
-    votes.set("govAddress", address);
-
-    votes.save().then(
-      (votes) => {
-        setLoader(false);
-        window.location.reload();
+    // const voteDetails = await Moralis.executeFunction(options)
+    await contractProcessor.fetch({
+      params: options,
+      onSuccess: () => {
+        recordVote(choice);
       },
-      (error) => {
-        // Execute any logic that should take place if the save fails.
-        // error is a Moralis.Error with an error code and message.
-        alert("Failed to create new object, with error code: " + error.message);
+      onError: (err) => {
+        Swal.fire({
+          title: "Error!",
+          text: "An error occured during transaction",
+          icon: "error",
+          confirmButtonText: "Ok",
+          confirmButtonColor: "#2C6CF4",
+        });
+        // setLoading(false);
         setLoader(false);
-      }
-    );
+      },
+    });
   }
 
   const forYes = () => {

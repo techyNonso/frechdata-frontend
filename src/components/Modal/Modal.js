@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
+import { useAuthUpdate, useAuth } from "../../contexts/AuthProvider";
 
 function Modal(props) {
   const [loading, setLoading] = useState(false);
   const [caution, setCaution] = useState(props.caution);
+  const [user, setUser] = useState("");
   const [contractCreated, setContratedCreated] = useState(false);
-  const { isAuthenticated, isWeb3Enabled, enableWeb3, Moralis } = useMoralis();
+  const { isAuthenticated, isWeb3Enabled, enableWeb3, Moralis, isInitialized } =
+    useMoralis();
   const contractProcessor = useWeb3ExecuteFunction();
   const [reload, setReload] = useState(false);
+  const [AuthState, currentAccount] = useAuth();
 
   let lockDelayInSec,
     voteDelayInSec,
@@ -31,6 +35,31 @@ function Modal(props) {
   voteThresholdInSec = Number(voteThreshold) * 24 * 60 * 60;
   proposalThresholdInSec = Number(lockDelay) * 24 * 60 * 60;
   mainTransactionValue = transactionValue ? transactionValue : 0;
+
+  const saveImage = (data) => {
+    let hexId = data.events["0"].raw.data.substring(2);
+    let _64BytesId = hexId.match(/.{1,64}/g)[0];
+    let info = _64BytesId.slice(-40);
+    info = "0x" + info;
+    console.log(info);
+    const GovernorImages = Moralis.Object.extend("GovernorImages");
+    const governorImages = new GovernorImages();
+
+    governorImages.set("govInfo", info);
+    governorImages.set("image", image);
+
+    governorImages.save().then(
+      (governorImages) => {
+        setLoading(false);
+        setCaution(false);
+        setContratedCreated(true);
+        window.location.reload();
+      },
+      (error) => {
+        alert("Failed to create new object, with error code: " + error.message);
+      }
+    );
+  };
 
   async function createGovernance() {
     let options = {
@@ -95,11 +124,8 @@ function Modal(props) {
 
     await contractProcessor.fetch({
       params: options,
-      onSuccess: () => {
-        setLoading(false);
-        setCaution(false);
-        setContratedCreated(true);
-        window.location.reload();
+      onSuccess: (data) => {
+        saveImage(data);
       },
       onError: (err) => {
         setLoading(false);
@@ -111,12 +137,25 @@ function Modal(props) {
     console.log(receipt);*/
   }
 
-  /* useEffect(() => {
-    if (!isWeb3Enabled && isAuthenticated) {
-      enableWeb3({ provider: "walletconnect" });
-      //console.log("web3 activated");
+  useEffect(() => {
+    let subscribed = true;
+
+    if (subscribed) {
+      if (isInitialized) {
+        if (currentAccount) {
+          setUser(currentAccount);
+        } else if (isAuthenticated) {
+          let accounts = Moralis.User.current();
+          let user = accounts.get("accounts")[0];
+          setUser(user);
+        }
+      }
     }
-  }, [isWeb3Enabled, isAuthenticated, enableWeb3]);*/
+    return () => {
+      // cancel the subscription
+      subscribed = false;
+    };
+  }, [isInitialized, currentAccount]);
 
   return (
     <div>

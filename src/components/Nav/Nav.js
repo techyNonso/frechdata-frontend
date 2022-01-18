@@ -30,13 +30,13 @@ function Nav() {
             <Link to="/">Home</Link>
           </div>
           <div className="hover:border-b-2 border-primaryBtn pb-1  cursor-pointer">
-            <Link to="/creator/1">workbench</Link>
+            <Link to="/creator/1">Workbench</Link>
           </div>
           <div className="hover:border-b-2 border-primaryBtn pb-1  cursor-pointer">
-            <Link to="/holder">voter</Link>
+            <Link to="/holder">Voter</Link>
           </div>
           <div className="hover:border-b-2 border-primaryBtn pb-1  cursor-pointer">
-            <Link to="/admin">Learn</Link>
+            <Link to="/admin">Results</Link>
           </div>
           <div className="hover:border-b-2 border-primaryBtn pb-1  cursor-pointer">
             <Link to="/admin">About</Link>
@@ -92,13 +92,13 @@ function Nav() {
             <div className="w-full py-2 hover:bg-bgGray pl-2">Home</div>
           </Link>
           <Link to="/creator/1">
-            <div className="w-full py-2 hover:bg-bgGray pl-2">workbench</div>
+            <div className="w-full py-2 hover:bg-bgGray pl-2">Workbench</div>
           </Link>
           <Link to="/holder">
-            <div className="w-full py-2 hover:bg-bgGray pl-2">voter</div>
+            <div className="w-full py-2 hover:bg-bgGray pl-2">Voter</div>
           </Link>
           <Link to="/learn">
-            <div className="w-full py-2 hover:bg-bgGray pl-2">Learn</div>
+            <div className="w-full py-2 hover:bg-bgGray pl-2">Results</div>
           </Link>
           <Link to="/about">
             <div className="w-full py-2 hover:bg-bgGray pl-2">About</div>

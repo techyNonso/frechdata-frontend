@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
 import { useAuthUpdate, useAuth } from "../../contexts/AuthProvider";
+import Swal from "sweetalert2";
 
 function ProposalModal(props) {
   //get auth context
@@ -66,7 +67,15 @@ function ProposalModal(props) {
         },
         onError: (err) => {
           setLoading(false);
-          console.log(err);
+          setCaution(false);
+          props.hide(false);
+          Swal.fire({
+            title: "Error!",
+            text: "An error occured during transaction",
+            icon: "error",
+            confirmButtonText: "Ok",
+            confirmButtonColor: "#2C6CF4",
+          });
         },
       });
 
@@ -132,45 +141,45 @@ function ProposalModal(props) {
     };
     await Moralis.enableWeb3();
 
-    /*await contractProcessor.fetch({
+    await contractProcessor.fetch({
       params: options,
-      onSuccess: () => {
-        setLoading(false);
-        setCaution(false);
-        setProposalCreated(true);
+      onSuccess: (id) => {
+        const Proposals = Moralis.Object.extend("Proposals");
+        const proposals = new Proposals();
+
+        proposals.set("proposalId", id);
+        proposals.set("description", proposal);
+        proposals.set("proposer", user);
+        proposals.set("govAddress", props.address);
+
+        proposals.save().then(
+          (proposals) => {
+            setLoading(false);
+            setCaution(false);
+            setProposalCreated(true);
+            window.location.reload();
+          },
+          (error) => {
+            alert(
+              "Failed to create new object, with error code: " + error.message
+            );
+          }
+        );
       },
       onError: (err) => {
+        Swal.fire({
+          title: "Error!",
+          text: "An error occured during transaction",
+          icon: "error",
+          confirmButtonText: "Ok",
+          confirmButtonColor: "#2C6CF4",
+        });
         setLoading(false);
         setCaution(false);
-        setForm(false);
-        console.log(err);
+        props.hide(false);
       },
-    });*/
-    const id = await Moralis.executeFunction(options);
-
-    const Proposals = Moralis.Object.extend("Proposals");
-    const proposals = new Proposals();
-
-    proposals.set("proposalId", id);
-    proposals.set("description", proposal);
-    proposals.set("proposer", user);
-    proposals.set("govAddress", props.address);
-
-    proposals.save().then(
-      (proposals) => {
-        // Execute any logic that should take place after the object is saved.
-        //alert("New object created with objectId: " + proposals.id);
-        setLoading(false);
-        setCaution(false);
-        setProposalCreated(true);
-        window.location.reload();
-      },
-      (error) => {
-        // Execute any logic that should take place if the save fails.
-        // error is a Moralis.Error with an error code and message.
-        alert("Failed to create new object, with error code: " + error.message);
-      }
-    );
+    });
+    //const id = await Moralis.executeFunction(options);
   }
 
   useEffect(() => {
