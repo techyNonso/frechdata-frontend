@@ -4,12 +4,13 @@ import ProposalList from "../ProposalList/ProposalList";
 import { Link, useParams } from "react-router-dom";
 import ProposalAbout from "../ProposalList/ProposalAbout";
 import { useAuthUpdate, useAuth } from "../../contexts/AuthProvider";
+import Swal from "sweetalert2";
 
 function HolderSecond() {
   //get auth context
   const [AuthState, currentAccount] = useAuth();
   const [user, setUser] = useState("");
-  const [filter, setFilter] = useState("all");
+  const [filter, setFilter] = useState("active");
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(true);
   const [proposalList, setProposals] = useState([]);
@@ -129,37 +130,51 @@ function HolderSecond() {
   };
 
   const getGovernorProposals = async () => {
-    setLoading(true);
-    const Proposals = Moralis.Object.extend("Proposals");
-    const query = new Moralis.Query(Proposals);
-    query.equalTo("govAddress", address);
-    const results = await query.find();
+    let web3 = new Moralis.Web3(window.ethereum);
+    let netId = await web3.eth.net.getId();
+    if (netId === 43113) {
+      setLoading(true);
+      const Proposals = Moralis.Object.extend("Proposals");
+      const query = new Moralis.Query(Proposals);
+      query.equalTo("govAddress", address);
+      const results = await query.find();
 
-    if (results.length > 0) {
-      let description;
-      let mydata;
-      let hexId;
-      let _64BytesId;
-      let proposalId;
+      if (results.length > 0) {
+        let description;
+        let mydata;
+        let hexId;
+        let _64BytesId;
+        let proposalId;
 
-      let proposalData = [];
+        let proposalData = [];
 
-      // Do something with the returned Moralis.Object values
-      for (let i = 0; i < results.length; i++) {
-        const object = results[i];
-        description = object.get("description");
-        mydata = object.get("proposalId");
-        hexId = mydata.events["0"].raw.data.substring(2);
-        _64BytesId = hexId.match(/.{1,64}/g)[1];
-        proposalId = _64BytesId.charAt(_64BytesId.length - 1);
-        let detail = await getProposalData(proposalId, description);
-        proposalData = [...proposalData, detail];
+        // Do something with the returned Moralis.Object values
+        for (let i = 0; i < results.length; i++) {
+          const object = results[i];
+          description = object.get("description");
+          mydata = object.get("proposalId");
+          hexId = mydata.events["0"].raw.data.substring(2);
+          _64BytesId = hexId.match(/.{1,64}/g)[1];
+          proposalId = _64BytesId.charAt(_64BytesId.length - 1);
+          let detail = await getProposalData(proposalId, description);
+          proposalData = [...proposalData, detail];
+        }
+        let outCome = filterOutCome(proposalData);
+        setProposals(outCome);
+        setLoading(false);
+      } else {
+        setLoading(false);
       }
-      let outCome = filterOutCome(proposalData);
-      setProposals(outCome);
-      setLoading(false);
     } else {
       setLoading(false);
+
+      Swal.fire({
+        title: "Warning!",
+        text: "It looks like you are not on Avalanche fuji testnet, please select the right network to access the data",
+        icon: "info",
+        confirmButtonText: "Ok",
+        confirmButtonColor: "#2C6CF4",
+      });
     }
   };
 
@@ -177,14 +192,24 @@ function HolderSecond() {
 
     if (subscribed) {
       if (isInitialized) {
-        getGovernorProposals();
-        getGorvernorName();
-        if (currentAccount) {
-          setUser(currentAccount);
-        } else if (isAuthenticated) {
-          let accounts = Moralis.User.current();
-          let user = accounts.get("accounts")[0];
-          setUser(user);
+        if (typeof window.ethereum !== "undefined") {
+          getGovernorProposals();
+          getGorvernorName();
+          if (currentAccount) {
+            setUser(currentAccount);
+          } else if (isAuthenticated) {
+            let accounts = Moralis.User.current();
+            let user = accounts.get("accounts")[0];
+            setUser(user);
+          }
+        } else {
+          Swal.fire({
+            title: "Error!",
+            text: "Your browser is not web3 enabled you can download metamask to enable this.",
+            icon: "error",
+            confirmButtonText: "Ok",
+            confirmButtonColor: "#2C6CF4",
+          });
         }
       }
     }
@@ -223,7 +248,7 @@ function HolderSecond() {
             </div>
           </div>
           <div className="col-span-2 sm:col-span-1 mt-4 sm:mt-0">
-            <form className="w-full">
+            {/*<form className="w-full">
               <div className="relative text-gray-400 text-right  ">
                 <span className="absolute y-0 l-0 ">
                   <button
@@ -253,7 +278,7 @@ function HolderSecond() {
                   autoComplete="off"
                 />
               </div>
-            </form>
+            </form>*/}
             <div className="  relative">
               <svg
                 xmlns="http://www.w3.org/2000/svg"

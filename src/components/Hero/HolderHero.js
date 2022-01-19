@@ -84,9 +84,9 @@ function HolderHero() {
           <ol className="inline-flex items-center space-x-1 md:space-x-3">
             <li>
               <div className="flex items-center">
-                <a href="#" className="text-sm font-medium text-gray-400  ">
+                <Link to="/" className="text-sm font-medium text-gray-400  ">
                   Home
-                </a>
+                </Link>
               </div>
             </li>
             <li aria-current="page">
@@ -103,9 +103,12 @@ function HolderHero() {
                     clipRule="evenodd"
                   ></path>
                 </svg>
-                <span className="ml-1 text-sm font-medium text-gray-400 md:ml-2 ">
+                <Link
+                  to="/holder"
+                  className="ml-1 text-sm font-medium text-gray-400 md:ml-2 "
+                >
                   Voter
-                </span>
+                </Link>
               </div>
             </li>
             <li aria-current="page">
@@ -146,7 +149,7 @@ function HolderHero() {
             {AuthState && (
               <button
                 onClick={() => setModal(true)}
-                className="w-fit h-fit rounded-full px-4 py-2 ml-3 cursor-pointer mt-3 bg-secondaryBtn text-white font-medium"
+                className="w-fit h-fit rounded-full px-4 py-2 ml-3 cursor-pointer mt-3 bg-primaryBtn text-white font-medium"
               >
                 create proposal
               </button>
@@ -169,11 +172,11 @@ function HolderHero() {
           </div>
         </div>
 
-        <div className="flex mt-6 gap-2 text-sm  justify-evenly sm:justify-start ">
-          <div className="border-2 p-3 ">
+        <div className="flex mt-6 gap-2 text-sm  justify-center sm:justify-start ">
+          {/*<div className="border-2 p-3 ">
             <div className="text-center font-medium ">132.73k</div>
             <div className="text-center text-gray-500">Members</div>
-          </div>
+          </div>*/}
           <div className="border-2 p-3 ">
             <div className="text-center font-medium ">{proposalsNumber}</div>
             <div className="text-center text-gray-500">Proposals</div>

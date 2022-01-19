@@ -30,6 +30,7 @@ export function AuthProvider({ children }) {
     account,
     isInitialized,
     authError,
+    isWeb3Enabled,
   } = useMoralis();
   const [userState, setUser] = useState();
   const [loaderState, setLoader] = useState(false);
@@ -38,25 +39,35 @@ export function AuthProvider({ children }) {
 
   //connect wallet
   const connectWallet = async () => {
-    /* const myuser = await authenticate({
-      provider: "walletconnect",
-      mobileLinks: [
-        "rainbow",
-        "metamask",
-        "argent",
-        "trust",
-        "imtoken",
-        "pillar",
-      ],
-    });*/
-    setLoader(true);
-    setConnectorClick(true);
-    await authenticate({ provider: "injected" });
+    if (typeof window.ethereum !== "undefined") {
+      /* const myuser = await authenticate({
+        provider: "walletconnect",
+        mobileLinks: [
+          "rainbow",
+          "metamask",
+          "argent",
+          "trust",
+          "imtoken",
+          "pillar",
+        ],
+      });*/
+      setLoader(true);
+      setConnectorClick(true);
+      await authenticate({ provider: "injected" });
 
-    setLoader(false);
+      setLoader(false);
 
-    //set auth state from moralis
-    //setUser(true);
+      //set auth state from moralis
+      //setUser(true);
+    } else {
+      Swal.fire({
+        title: "Error!",
+        text: "Your browser is not web3 enabled you can download metamask to enable this.",
+        icon: "error",
+        confirmButtonText: "Ok",
+        confirmButtonColor: "#2C6CF4",
+      });
+    }
   };
 
   //disconnect wallet
@@ -66,31 +77,56 @@ export function AuthProvider({ children }) {
   };
 
   const evaluateAccounts = async (account) => {
-    let accountsList = Moralis.User.current();
-    if (isAuthenticated && accountsList) {
-      let user = accountsList.get("accounts")[0];
-      if (account && account !== user) {
-        setCurrentAccount(account);
-        //await logout();
-        //await authenticate({ provider: "injected" });
-
-        //setUser(isAuthenticated);
-        //window.location.reload();
+    if (typeof window.ethereum !== "undefined") {
+      let accountsList = Moralis.User.current();
+      if (isAuthenticated && accountsList) {
+        let user = accountsList.get("accounts")[0];
+        if (account && account !== user) {
+          setCurrentAccount(account);
+        }
+      } else if (!isAuthenticated) {
+        setCurrentAccount("");
+        //window.location.replace("/");
       }
-    } else if (!isAuthenticated) {
-      setCurrentAccount("");
-      //window.location.replace("/");
     }
   };
 
+  Moralis.onChainChanged(() => {
+    Swal.fire({
+      title: "Warning!",
+      text: "It looks like you are not on Avalanche fuji testnet, please select the right network to access the data",
+      icon: "info",
+      confirmButtonText: "Ok",
+      confirmButtonColor: "#2C6CF4",
+    });
+  });
+
+  /*const checkNetwork = async () => {
+    let web3 = new Moralis.Web3(window.ethereum);
+    let netId = await web3.eth.net.getId();
+    if (netId !== 43113 && isAuthenticated) {
+      Swal.fire({
+        title: "Warning!",
+        text: "It looks like you are not on Avalanche fuji testnet, please select the right network to access the data",
+        icon: "info",
+        confirmButtonText: "Ok",
+        confirmButtonColor: "#2C6CF4",
+      });
+    }
+  };*/
+
+  /*useEffect(() => {
+    checkNetwork();
+  }, [isAuthenticated]);*/
+
   useEffect(() => {
     setUser(isAuthenticated);
-    if (authError && connectorClick) {
+    if (authError && connectorClick && typeof window.ethereum !== "undefined") {
       setLoader(false);
       setConnectorClick(false);
       Swal.fire({
         title: "Error!",
-        text: "An error occured during authentication",
+        text: "An error occured during authentication. Please check your internet conection and try again",
         icon: "error",
         confirmButtonText: "Ok",
         confirmButtonColor: "#2C6CF4",

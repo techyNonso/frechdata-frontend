@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
 import { useAuthUpdate, useAuth } from "../../contexts/AuthProvider";
+import Swal from "sweetalert2";
 
 function Modal(props) {
   const [loading, setLoading] = useState(false);
@@ -62,79 +63,91 @@ function Modal(props) {
   };
 
   async function createGovernance() {
-    let options = {
-      contractAddress: "0x8728f06Cabc2850B2Faa6Ab6F007129cc3547c95",
-      functionName: "createGovernor",
-      abi: [
-        {
-          inputs: [
-            {
-              internalType: "string",
-              name: "_governorName",
-              type: "string",
-            },
-            {
-              internalType: "uint256",
-              name: "_timelockDelay",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
-              name: "_votingDelay",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
-              name: "_votingPeriod",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
-              name: "_proposalThreshold",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
-              name: "_votingThreshold",
-              type: "uint256",
-            },
-          ],
-          name: "createGovernor",
-          outputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          stateMutability: "payable",
-          type: "function",
+    let web3 = new Moralis.Web3(window.ethereum);
+    let netId = await web3.eth.net.getId();
+    if (netId === 43113) {
+      let options = {
+        contractAddress: "0x8728f06Cabc2850B2Faa6Ab6F007129cc3547c95",
+        functionName: "createGovernor",
+        abi: [
+          {
+            inputs: [
+              {
+                internalType: "string",
+                name: "_governorName",
+                type: "string",
+              },
+              {
+                internalType: "uint256",
+                name: "_timelockDelay",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "_votingDelay",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "_votingPeriod",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "_proposalThreshold",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "_votingThreshold",
+                type: "uint256",
+              },
+            ],
+            name: "createGovernor",
+            outputs: [
+              {
+                internalType: "address",
+                name: "",
+                type: "address",
+              },
+            ],
+            stateMutability: "payable",
+            type: "function",
+          },
+        ],
+        params: {
+          _governorName: name,
+          _timelockDelay: lockDelayInSec,
+          _votingDelay: voteDelayInSec,
+          _votingPeriod: votePeriodInSec,
+          _proposalThreshold: proposalThresholdInSec,
+          _votingThreshold: voteThresholdInSec,
         },
-      ],
-      params: {
-        _governorName: name,
-        _timelockDelay: lockDelayInSec,
-        _votingDelay: voteDelayInSec,
-        _votingPeriod: votePeriodInSec,
-        _proposalThreshold: proposalThresholdInSec,
-        _votingThreshold: voteThresholdInSec,
-      },
-      //msgValue: Moralis.Units.ETH(0.1),
-    };
+        //msgValue: Moralis.Units.ETH(0.1),
+      };
 
-    await contractProcessor.fetch({
-      params: options,
-      onSuccess: (data) => {
-        saveImage(data);
-      },
-      onError: (err) => {
-        setLoading(false);
-        console.log(err);
-      },
-    });
+      await contractProcessor.fetch({
+        params: options,
+        onSuccess: (data) => {
+          saveImage(data);
+        },
+        onError: (err) => {
+          setLoading(false);
+          console.log(err);
+        },
+      });
 
-    /*const receipt = await Moralis.executeFunction(options);
+      /*const receipt = await Moralis.executeFunction(options);
     console.log(receipt);*/
+    } else {
+      Swal.fire({
+        title: "Warning!",
+        text: "It looks like you are not on Avalanche fuji testnet, please select the right network to continue",
+        icon: "info",
+        confirmButtonText: "Ok",
+        confirmButtonColor: "#2C6CF4",
+      });
+    }
   }
 
   useEffect(() => {

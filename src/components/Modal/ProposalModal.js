@@ -23,68 +23,81 @@ function ProposalModal(props) {
   };
 
   async function delegate() {
-    const Delegations = Moralis.Object.extend("Delegations");
-    const query = new Moralis.Query(Delegations);
-    query.equalTo("delegator", user);
-    const results = await query.find();
+    let web3 = new Moralis.Web3(window.ethereum);
+    let netId = await web3.eth.net.getId();
+    if (netId === 43113) {
+      const Delegations = Moralis.Object.extend("Delegations");
+      const query = new Moralis.Query(Delegations);
+      query.equalTo("delegator", user);
+      const results = await query.find();
 
-    if (results.length == 0) {
-      let options = {
-        contractAddress: "0x364ba491b1201a9c0bd326144cd6472e5ff299f1",
-        functionName: "delegate",
-        abi: [
-          {
-            inputs: [
-              {
-                internalType: "address",
-                name: "delegatee",
-                type: "address",
-              },
-            ],
-            name: "delegate",
-            outputs: [],
-            stateMutability: "nonpayable",
-            type: "function",
+      if (results.length == 0) {
+        let options = {
+          contractAddress: "0x364ba491b1201a9c0bd326144cd6472e5ff299f1",
+          functionName: "delegate",
+          abi: [
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "delegatee",
+                  type: "address",
+                },
+              ],
+              name: "delegate",
+              outputs: [],
+              stateMutability: "nonpayable",
+              type: "function",
+            },
+          ],
+          params: {
+            delegatee: user,
           },
-        ],
-        params: {
-          delegatee: user,
-        },
-        //msgValue: Moralis.Units.ETH(0.1),
-      };
+          //msgValue: Moralis.Units.ETH(0.1),
+        };
 
-      await contractProcessor.fetch({
-        params: options,
-        onSuccess: () => {
-          const NewDelegate = Moralis.Object.extend("Delegations");
-          const newDelegate = new NewDelegate();
+        await contractProcessor.fetch({
+          params: options,
+          onSuccess: () => {
+            const NewDelegate = Moralis.Object.extend("Delegations");
+            const newDelegate = new NewDelegate();
 
-          newDelegate.set("isDelegated", true);
-          newDelegate.set("delegator", user);
-          newDelegate.save().then((data) => {
-            makeProposal();
-          });
-        },
-        onError: (err) => {
-          setLoading(false);
-          setCaution(false);
-          props.hide(false);
-          Swal.fire({
-            title: "Error!",
-            text: "An error occured during transaction",
-            icon: "error",
-            confirmButtonText: "Ok",
-            confirmButtonColor: "#2C6CF4",
-          });
-        },
-      });
+            newDelegate.set("isDelegated", true);
+            newDelegate.set("delegator", user);
+            newDelegate.save().then((data) => {
+              makeProposal();
+            });
+          },
+          onError: (err) => {
+            setLoading(false);
+            setCaution(false);
+            props.hide(false);
+            Swal.fire({
+              title: "Error!",
+              text: "An error occured during transaction",
+              icon: "error",
+              confirmButtonText: "Ok",
+              confirmButtonColor: "#2C6CF4",
+            });
+          },
+        });
 
-      /*const receipt = await Moralis.executeFunction(options);
+        /*const receipt = await Moralis.executeFunction(options);
       console.log(receipt);*/
+      } else {
+        makeProposal();
+      }
     } else {
-      makeProposal();
+      Swal.fire({
+        title: "Warning!",
+        text: "It looks like you are not on Avalanche fuji testnet, please select the right network to continue",
+        icon: "info",
+        confirmButtonText: "Ok",
+        confirmButtonColor: "#2C6CF4",
+      });
     }
   }
+
   async function makeProposal() {
     let options = {
       contractAddress: props.address,

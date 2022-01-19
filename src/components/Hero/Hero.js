@@ -15,10 +15,10 @@ function Hero() {
       <div className="grid grid-cols-4 pt-14 pb-10 h-auto px-5 md:px-16  bg-bgBlue ">
         <div className=" col-span-4 sm:col-span-2 xl:col-span-3">
           <div>
-            <h2 className=" font-bold  text-3xl sm:text-4xl lg:text-6xl pb-4 xl:leading-normal">
+            <h2 className=" font-bold text-center sm:text-left  text-3xl sm:text-4xl lg:text-6xl pb-4 xl:leading-normal">
               Access to Unlimited Governance Proposals
             </h2>
-            <p className=" text-xl sm:text-2xl font-normal">
+            <p className=" text-xl text-center sm:text-left sm:text-2xl font-normal">
               Make your voice heard. View and vote on governance proposals.
             </p>
 
