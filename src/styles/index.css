@@ -799,6 +799,18 @@ Ensure the default browser behavior of the `hidden` attribute.
   width: 200px;
 }
 
+.w-\[80\%\]{
+  width: 80%;
+}
+
+.w-\[85\%\]{
+  width: 85%;
+}
+
+.w-\[15\%\]{
+  width: 15%;
+}
+
 .max-w-\[240px\]{
   max-width: 240px;
 }
@@ -914,10 +926,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .justify-between{
   justify-content: space-between;
-}
-
-.justify-evenly{
-  justify-content: space-evenly;
 }
 
 .justify-items-center{

@@ -66,7 +66,7 @@ function Card(props) {
         </p>
         <div className="w-full h-auto flex justify-items-center pt-4">
           <Link
-            to={`/propsals/${props.contract.get("govAddress")}/1`}
+            to={`/proposals/${props.contract.get("govAddress")}/1`}
             className="bg-secondaryBtn text-white text-sm font-medium text-center rounded-md px-4 py-2 m-auto cursor-pointer"
           >
             Join

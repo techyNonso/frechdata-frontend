@@ -138,7 +138,7 @@ function HolderSecond() {
       const query = new Moralis.Query(Proposals);
       query.equalTo("govAddress", address);
       const results = await query.find();
-
+      console.log(results);
       if (results.length > 0) {
         let description;
         let mydata;
@@ -210,6 +210,7 @@ function HolderSecond() {
             confirmButtonText: "Ok",
             confirmButtonColor: "#2C6CF4",
           });
+          setLoading(false);
         }
       }
     }
@@ -226,7 +227,7 @@ function HolderSecond() {
           <div className="col-span-2 sm:col-span-1">
             <div className="flex w-fit px-3 border-b-2">
               <Link
-                to={`/propsals/${address}/1`}
+                to={`/proposals/${address}/1`}
                 className={`w-[100px] text-center font-medium text-xs   ${
                   section == 1
                     ? "border-b-2 border-b-primaryBtn text-primaryBtn cursor-pointer"
@@ -236,7 +237,7 @@ function HolderSecond() {
                 Proposals
               </Link>
               <Link
-                to={`/propsals/${address}/2`}
+                to={`/proposals/${address}/2`}
                 className={`w-[100px] text-center font-medium text-xs  ${
                   section == 2
                     ? "border-b-2 border-b-primaryBtn text-primaryBtn cursor-pointer"
@@ -323,7 +324,7 @@ function HolderSecond() {
             )}
             {proposalList.length === 0 && !loading && (
               <div className="font-semibold text-lg text-gray-600">
-                No Proposals Found
+                No Proposals Found on {filter} proposals list
               </div>
             )}
           </div>

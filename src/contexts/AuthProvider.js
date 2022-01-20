@@ -91,14 +91,18 @@ export function AuthProvider({ children }) {
     }
   };
 
-  Moralis.onChainChanged(() => {
-    Swal.fire({
-      title: "Warning!",
-      text: "It looks like you are not on Avalanche fuji testnet, please select the right network to access the data",
-      icon: "info",
-      confirmButtonText: "Ok",
-      confirmButtonColor: "#2C6CF4",
-    });
+  Moralis.onChainChanged(async () => {
+    let web3 = new Moralis.Web3(window.ethereum);
+    let netId = await web3.eth.net.getId();
+    if (netId !== 43113) {
+      Swal.fire({
+        title: "Warning!",
+        text: "It looks like you are not on Avalanche fuji testnet, please select the right network to access the data",
+        icon: "info",
+        confirmButtonText: "Ok",
+        confirmButtonColor: "#2C6CF4",
+      });
+    }
   });
 
   /*const checkNetwork = async () => {

@@ -32,7 +32,7 @@ function App() {
           <Route path="/holder" exact element={<CoinHolder />} />
           <Route path="/creator/:section" exact element={<CoinCreator />} />
           <Route
-            path="/propsals/:address/:section"
+            path="/proposals/:address/:section"
             exact
             element={<Proposals />}
           />

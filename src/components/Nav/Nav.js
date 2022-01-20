@@ -14,7 +14,6 @@ function Nav(props) {
   const [menu, setMenu] = useState("hidden");
   const [currentPath, setPath] = useState("");
   const path = useLocation().pathname;
-
   useEffect(() => {
     if (path == "/") {
       setPath("/");
@@ -22,11 +21,11 @@ function Nav(props) {
       let paths = path.split("/");
       setPath(paths[1]);
     }
-  }, [path]);
+  });
   return (
     <div>
       <div className="flex w-full  pt-6 relative">
-        <Link to="/" className="  flex w-[70%] lg:w-[25%]">
+        <Link to="/" className="  flex w-[85%] lg:w-[25%]">
           <img
             className="w-[30px] h-[30px] lg:w-[40px] lg:h-[40px]  rounded-full mr-1  mt-3 lg:mt-2 "
             src={logo}
@@ -55,7 +54,9 @@ function Nav(props) {
           <Link
             to="/holder"
             className={`${
-              currentPath == "holder" ? "bg-bgGray" : ""
+              currentPath == "holder" || currentPath == "proposals"
+                ? "bg-bgGray"
+                : ""
             } hover:bg-bgGray py-1 px-2 rounded-lg  pb-1  cursor-pointer`}
           >
             Voter
@@ -92,7 +93,7 @@ function Nav(props) {
           )}
         </div>
 
-        <div className="flex w-[20%] lg:hidden pt-3 justify-self-end justify-end">
+        <div className="flex w-[15%] lg:hidden pt-3 justify-self-end justify-end">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-8 w-8 cursor-pointer "
