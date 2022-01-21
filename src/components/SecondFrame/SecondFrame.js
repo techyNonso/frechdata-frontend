@@ -12,7 +12,7 @@ function SecondFrame() {
             <Link to="/">Freshcoastblockchain.com</Link>
           </h3>
 
-          <p className="mt-6 font-normal text-xl text-center mb-6">
+          <p className="mt-6 font-normal text-xl text-justify sm:text-center mb-6">
             Fresh coast blockchain is disrupting blockchain governance. We
             provide real-time creation of audited, certified, tested, and
             upgradable governance contracts.

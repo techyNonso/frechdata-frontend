@@ -779,8 +779,8 @@ Ensure the default browser behavior of the `hidden` attribute.
   width: 80px;
 }
 
-.w-\[70\%\]{
-  width: 70%;
+.w-\[85\%\]{
+  width: 85%;
 }
 
 .w-\[30px\]{
@@ -795,20 +795,12 @@ Ensure the default browser behavior of the `hidden` attribute.
   width: 20%;
 }
 
-.w-\[200px\]{
-  width: 200px;
-}
-
-.w-\[80\%\]{
-  width: 80%;
-}
-
-.w-\[85\%\]{
-  width: 85%;
-}
-
 .w-\[15\%\]{
   width: 15%;
+}
+
+.w-\[200px\]{
+  width: 200px;
 }
 
 .max-w-\[240px\]{
@@ -978,6 +970,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .justify-self-end{
   justify-self: end;
+}
+
+.justify-self-center{
+  justify-self: center;
 }
 
 .rounded-full{
@@ -1669,6 +1665,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
   .sm\:text-left{
     text-align: left;
+  }
+
+  .sm\:text-center{
+    text-align: center;
   }
 
   .sm\:text-4xl{

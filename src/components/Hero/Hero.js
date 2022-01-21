@@ -18,20 +18,22 @@ function Hero() {
             <h2 className=" font-bold text-center sm:text-left  text-3xl sm:text-4xl lg:text-6xl pb-4 xl:leading-normal">
               Access to Unlimited Governance Proposals
             </h2>
-            <p className=" text-xl text-center sm:text-left sm:text-2xl font-normal">
+            <p className=" text-xl text-justify  sm:text-left sm:text-2xl font-normal">
               Make your voice heard. View and vote on governance proposals.
             </p>
 
-            {!AuthState && (
-              <div
-                onClick={() => {
-                  connectWallet();
-                }}
-                className="bg-primaryBtn w-fit text-white mt-6  font-medium leading-loose cursor-pointer rounded-2xl p-2 px-4 tracking-wider"
-              >
-                Connect Wallet
-              </div>
-            )}
+            <div className=" flex justify-center sm:justify-start">
+              {!AuthState && (
+                <div
+                  onClick={() => {
+                    connectWallet();
+                  }}
+                  className="bg-primaryBtn w-fit text-white mt-6  font-medium leading-loose cursor-pointer rounded-2xl p-2 px-4 tracking-wider"
+                >
+                  Connect Wallet
+                </div>
+              )}
+            </div>
           </div>
         </div>
         <div className=" hidden sm:block sm:col-span-2 xl:col-span-1">

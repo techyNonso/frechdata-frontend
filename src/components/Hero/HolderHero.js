@@ -164,7 +164,7 @@ function HolderHero() {
                 onClick={() => {
                   connectWallet();
                 }}
-                className="w-fit h-fit rounded-md px-4 py-2 ml-3 cursor-pointer mt-3 bg-secondaryBtn text-white font-medium"
+                className="w-fit h-fit rounded-md px-4 py-2 ml-3 cursor-pointer mt-3 bg-primaryBtn text-white font-medium"
               >
                 Join
               </button>

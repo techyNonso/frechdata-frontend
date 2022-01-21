@@ -25,7 +25,7 @@ function CoinHolderSecond(props) {
   const getContractsForQuery = async (myQuery) => {
     const Contracts = Moralis.Object.extend("GovernanceInstanceCreations");
     const query = new Moralis.Query(Contracts);
-    query.equalTo("govName", myQuery);
+    query.startsWith("govName", myQuery);
     const results = await query.find();
 
     setContracts(results);
