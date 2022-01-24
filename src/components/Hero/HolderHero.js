@@ -179,11 +179,15 @@ function HolderHero() {
           </div>*/}
           <div className="border-2 p-3 ">
             <div className="text-center font-medium ">{proposalsNumber}</div>
-            <div className="text-center text-gray-500">Proposals</div>
+            <div className="text-center text-gray-500">
+              {proposalsNumber > 1 ? "Proposals" : "Proposal"}
+            </div>
           </div>
           <div className="border-2 p-3 ">
             <div className="text-center font-medium ">{votesNumber}</div>
-            <div className="text-center text-gray-500">Voters</div>
+            <div className="text-center text-gray-500">
+              {votesNumber > 1 ? "Voters" : "Voter"}
+            </div>
           </div>
         </div>
 

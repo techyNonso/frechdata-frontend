@@ -6,7 +6,7 @@ import SecondFrame from "../components/SecondFrame/SecondFrame";
 import HomeBase from "../components/HomeBase/HomeBase";
 import { AuthProvider } from "../contexts/AuthProvider";
 
-function Home() {
+function Results() {
   return (
     <div className="font-headFont relative ">
       <AuthProvider>
@@ -20,4 +20,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Results;

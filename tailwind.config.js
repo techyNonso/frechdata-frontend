@@ -13,7 +13,7 @@ module.exports = {
         greenShade: "#E8F7EA",
       },
       fontFamily: {
-        headFont: ["Montserrat"],
+        headFont: ["Source Sans Pro", "sans-serif"],
       },
     },
   },

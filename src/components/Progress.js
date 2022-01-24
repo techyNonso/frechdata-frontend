@@ -190,9 +190,13 @@ function Progress({ status, data, voteCount, totalVotes }) {
   };
 
   const verdict = (yes, no) => {
-    if (Number(yes) > Number(no)) return "Yes";
-    if (Number(yes) < Number(no)) return "No";
-    if (Number(yes) === Number(no)) return "Draw";
+    if (Number(yes) !== 0 || Number(no) !== 0) {
+      if (Number(yes) > Number(no)) return "Yes";
+      if (Number(yes) < Number(no)) return "No";
+      if (Number(yes) === Number(no)) return "Draw";
+    } else {
+      return "N/A";
+    }
   };
 
   const getSizeYes = () => {

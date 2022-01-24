@@ -12,11 +12,11 @@ function ContractFrame(props) {
   return (
     <div>
       <h2 className="pt-8 font-bold text-2xl pb-4">Governance Contract</h2>
-      <p className="text-lg">
+      {/**<p className="text-lg">
         <strong>NOTE:</strong> You will only be able to create a governance
         contract once, and you will not be able to change any information once
         your governance contract is successfully created.
-      </p>
+      </p>**/}
       {!AuthState && (
         <div>
           <p className="text-xs pt-3">

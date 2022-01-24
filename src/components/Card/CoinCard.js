@@ -6,6 +6,7 @@ import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
 import { useAuthUpdate, useAuth } from "../../contexts/AuthProvider";
 import { generatePath } from "react-router-dom";
 import img from "../../images/img.png";
+import DescriptionModal from "../Modal/DescriptionModal";
 
 function CoinCard(props) {
   //get auth context
@@ -13,6 +14,7 @@ function CoinCard(props) {
   const [votesNumber, setVotesNumber] = useState(0);
   const [totalVotes, setTotalVotes] = useState(0);
   const [image, setImage] = useState("");
+  const [modalVissible, setModal] = useState(false);
 
   const {
     isAuthenticated,
@@ -79,7 +81,12 @@ function CoinCard(props) {
   }, [currentAccount]);
   return (
     <div>
-      <div className="bg-white h-auto p-2 py-4 rounded-xl border-2 border-coinCardBorder grid grid-cols-2 mb-4">
+      <div
+        onClick={() => {
+          setModal(true);
+        }}
+        className=" hover:shadow-md cursor-pointer bg-white h-auto p-2 py-4 rounded-xl border-2 border-coinCardBorder grid grid-cols-2 mb-4"
+      >
         <div className="col-span-2 sm:col-span-1 px-2 border-r-0  sm:border-r-2 border-coinCardBorder ">
           <div>
             <div className="flex justify-between">
@@ -96,8 +103,11 @@ function CoinCard(props) {
               <VoteState status={props.status} />
             </div>
 
-            <p className="text-xs pl-8 sm:pl-8">By: Tremendous crypto group</p>
-            <p className="text-sm pt-2 font-normal">{props.description}</p>
+            {/*<p className="text-xs pl-8 sm:pl-8">By: Tremendous crypto group</p>*/}
+            <p className="text-sm pt-2 font-normal">
+              {props.description.substring(0, 100)}
+              {props.description.length > 100 ? "..." : ""}
+            </p>
           </div>
         </div>
         <div className="col-span-2 sm:col-span-1 px-2 flex  items-center mt-10 sm:mt-0">
@@ -109,6 +119,15 @@ function CoinCard(props) {
           />
         </div>
       </div>
+      {modalVissible && (
+        <DescriptionModal
+          hide={setModal}
+          name={props.name}
+          description={props.description}
+          img={!image ? img : `https://ipfs.infura.io/ipfs/${image}`}
+          status={props.status}
+        />
+      )}
     </div>
   );
 }

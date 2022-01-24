@@ -1,5 +1,5 @@
 import "./index.css";
-import Admin from "./pages/Admin";
+import Results from "./pages/Results";
 import CoinHolder from "./pages/CoinHolder";
 import CoinCreator from "./pages/CoinCreator";
 import Home from "./pages/Home";
@@ -28,7 +28,7 @@ function App() {
       <div>
         <Routes>
           <Route path="/" exact element={<Home />} />
-          <Route path="/admin" exact element={<Admin />} />
+          <Route path="/results" exact element={<Results />} />
           <Route path="/holder" exact element={<CoinHolder />} />
           <Route path="/creator/:section" exact element={<CoinCreator />} />
           <Route

@@ -1,34 +1,35 @@
 {
   "files": {
-    "main.css": "/static/css/main.7ab1d420.chunk.css",
-    "main.js": "/static/js/main.3634de15.chunk.js",
-    "main.js.map": "/static/js/main.3634de15.chunk.js.map",
+    "main.css": "/static/css/main.b63a3b8f.chunk.css",
+    "main.js": "/static/js/main.253d496b.chunk.js",
+    "main.js.map": "/static/js/main.253d496b.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.e85e47ab.js",
     "runtime-main.js.map": "/static/js/runtime-main.e85e47ab.js.map",
-    "static/js/2.c58e750e.chunk.js": "/static/js/2.c58e750e.chunk.js",
-    "static/js/2.c58e750e.chunk.js.map": "/static/js/2.c58e750e.chunk.js.map",
+    "static/js/2.a32d5e12.chunk.js": "/static/js/2.a32d5e12.chunk.js",
+    "static/js/2.a32d5e12.chunk.js.map": "/static/js/2.a32d5e12.chunk.js.map",
     "static/js/3.39983ee9.chunk.js": "/static/js/3.39983ee9.chunk.js",
     "static/js/3.39983ee9.chunk.js.map": "/static/js/3.39983ee9.chunk.js.map",
     "index.html": "/index.html",
-    "static/css/main.7ab1d420.chunk.css.map": "/static/css/main.7ab1d420.chunk.css.map",
-    "static/js/2.c58e750e.chunk.js.LICENSE.txt": "/static/js/2.c58e750e.chunk.js.LICENSE.txt",
+    "static/css/main.b63a3b8f.chunk.css.map": "/static/css/main.b63a3b8f.chunk.css.map",
+    "static/js/2.a32d5e12.chunk.js.LICENSE.txt": "/static/js/2.a32d5e12.chunk.js.LICENSE.txt",
     "static/media/Coin98.1e4e4073.png": "/static/media/Coin98.1e4e4073.png",
     "static/media/MathWallet.c8223809.svg": "/static/media/MathWallet.c8223809.svg",
     "static/media/SafePal.482d45d2.svg": "/static/media/SafePal.482d45d2.svg",
     "static/media/TokenPocket.977e38ab.svg": "/static/media/TokenPocket.977e38ab.svg",
     "static/media/coin.e4d69bcd.png": "/static/media/coin.e4d69bcd.png",
+    "static/media/coinholder.7b676dc9.png": "/static/media/coinholder.7b676dc9.png",
     "static/media/creatorImage.41831fb1.png": "/static/media/creatorImage.41831fb1.png",
-    "static/media/creatorPage.590080d7.png": "/static/media/creatorPage.590080d7.png",
-    "static/media/heroPage.dc0adb4d.png": "/static/media/heroPage.dc0adb4d.png",
+    "static/media/creatormain.e50006ed.png": "/static/media/creatormain.e50006ed.png",
     "static/media/holder.32eee70b.png": "/static/media/holder.32eee70b.png",
-    "static/media/homepageHero.dae4825c.png": "/static/media/homepageHero.dae4825c.png",
+    "static/media/homepageHero.2c081d07.png": "/static/media/homepageHero.2c081d07.png",
     "static/media/img.2e348a05.png": "/static/media/img.2e348a05.png",
+    "static/media/result.df394e50.png": "/static/media/result.df394e50.png",
     "static/media/wallet-connect.488dc369.svg": "/static/media/wallet-connect.488dc369.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.e85e47ab.js",
-    "static/js/2.c58e750e.chunk.js",
-    "static/css/main.7ab1d420.chunk.css",
-    "static/js/main.3634de15.chunk.js"
+    "static/js/2.a32d5e12.chunk.js",
+    "static/css/main.b63a3b8f.chunk.css",
+    "static/js/main.253d496b.chunk.js"
   ]
 }

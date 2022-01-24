@@ -178,10 +178,8 @@ function Modal(props) {
             {caution && (
               <div>
                 <p>
-                  <strong>NOTE:</strong> You will only be able to create a
-                  governance contract once, and you will not be able to change
-                  any information once your governance contract is successfully
-                  created.
+                  <strong>NOTE:</strong>This action can not be done, ensure all
+                  details provided are correct.
                 </p>
                 <div className="flex justify-center space-x-3">
                   <span

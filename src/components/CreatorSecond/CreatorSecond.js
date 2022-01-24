@@ -85,30 +85,24 @@ function CreatorSecond() {
           <Link
             to="/creator/1"
             className={`w-fit px-2 text-center font-medium text-xs border-b-2 ${
-              section == 1
-                ? "border-b-primaryBtn text-primaryBtn cursor-pointer"
-                : ""
-            }  hover:border-b-primaryBtn `}
+              section == 1 ? "border-b-primaryBtn text-primaryBtn " : ""
+            }  hover:border-b-primaryBtn cursor-pointer`}
           >
             Governance contract
           </Link>
           <Link
             to="/creator/2"
             className={`w-fit px-2 text-center font-medium text-xs border-b-2 ${
-              section == 2
-                ? "border-b-primaryBtn text-primaryBtn cursor-pointer"
-                : ""
-            }  hover:border-b-primaryBtn `}
+              section == 2 ? "border-b-primaryBtn text-primaryBtn " : ""
+            }  hover:border-b-primaryBtn cursor-pointer`}
           >
             Proposals
           </Link>
           <Link
             to="/creator/3"
             className={`w-fit px-2 text-center font-medium text-xs border-b-2 ${
-              section == 3
-                ? "border-b-primaryBtn text-primaryBtn cursor-pointer"
-                : ""
-            }  hover:border-b-primaryBtn `}
+              section == 3 ? "border-b-primaryBtn text-primaryBtn " : ""
+            }  hover:border-b-primaryBtn cursor-pointer`}
           >
             About
           </Link>

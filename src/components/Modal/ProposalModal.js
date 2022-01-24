@@ -201,7 +201,7 @@ function ProposalModal(props) {
         setUser(currentAccount);
         let accounts = Moralis.User.current();
         setAccount(accounts);
-      } else {
+      } else if (!currentAccount && isAuthenticated) {
         let accounts = Moralis.User.current();
         setAccount(accounts);
         let user = accounts.get("accounts")[0];

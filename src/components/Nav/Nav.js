@@ -62,13 +62,16 @@ function Nav(props) {
             Voter
           </Link>
           <Link
-            to="/admin"
-            className={`hover:bg-bgGray py-1 px-2 rounded-lg  pb-1  cursor-pointer`}
+            to="/results"
+            className={`${
+              currentPath == "results" ? "bg-bgGray" : ""
+            } hover:bg-bgGray py-1 px-2 rounded-lg  pb-1  cursor-pointer`}
           >
             Results
           </Link>
+
           <Link
-            to="/admin"
+            to="/about"
             className={`hover:bg-bgGray py-1 px-2 rounded-lg  pb-1  cursor-pointer`}
           >
             About
@@ -147,9 +150,16 @@ function Nav(props) {
               Voter
             </div>
           </Link>
-          <Link to="/learn">
-            <div className={`w-full py-2 hover:bg-bgGray pl-2`}>Results</div>
+          <Link to="/results">
+            <div
+              className={`${
+                currentPath == "results" ? "bg-bgGray" : ""
+              } w-full py-2 hover:bg-bgGray pl-2`}
+            >
+              Results
+            </div>
           </Link>
+
           <Link to="/about">
             <div className={`w-full py-2 hover:bg-bgGray pl-2`}>About</div>
           </Link>
