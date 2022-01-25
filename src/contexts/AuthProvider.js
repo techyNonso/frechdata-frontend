@@ -51,11 +51,27 @@ export function AuthProvider({ children }) {
           "pillar",
         ],
       });*/
-      setLoader(true);
-      setConnectorClick(true);
-      await authenticate({ provider: "injected" });
+      let web3 = new Moralis.Web3(window.ethereum);
+      let netId = await web3.eth.net.getId();
+      if (netId !== 43113) {
+        Swal.fire({
+          title: "Warning!",
+          text: "It looks like you are not on Avalanche fuji testnet, please select the right network to access the data",
+          icon: "info",
+          confirmButtonText: "Ok",
+          confirmButtonColor: "#2C6CF4",
+        });
 
-      setLoader(false);
+        if (connectorClick) {
+          setLoader(false);
+        }
+      } else {
+        setLoader(true);
+        setConnectorClick(true);
+        await authenticate({ provider: "injected" });
+
+        setLoader(false);
+      }
 
       //set auth state from moralis
       //setUser(true);
@@ -102,6 +118,10 @@ export function AuthProvider({ children }) {
         confirmButtonText: "Ok",
         confirmButtonColor: "#2C6CF4",
       });
+
+      if (connectorClick) {
+        setLoader(false);
+      }
     }
   });
 
